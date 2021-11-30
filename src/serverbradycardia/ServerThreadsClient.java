@@ -15,23 +15,27 @@ import java.util.logging.Logger;
  *
  * @author drijc
  */
-public class ServerThreadsClient implements Runnable{
-      int byteRead;
+public class ServerThreadsClient implements Runnable {
+
+    int byteRead;
     Socket socket;
 
     public ServerThreadsClient(Socket socket) {
         this.socket = socket;
     }
 
-      @Override
+    @Override
     public void run() {
         InputStream inputStream = null;
         try {
-            inputStream = socket.getInputStream();
-            while ((byteRead = inputStream.read()) != -1) {
+            while (true) {
+                inputStream = socket.getInputStream();
+                Utilities.ConnectionClient.getData(inputStream);
+            }
+            /*while ((byteRead = inputStream.read()) != -1) {
                 char caracter = (char) byteRead;
                 System.out.print(caracter);
-            }
+            }*/
         } catch (IOException ex) {
             Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
