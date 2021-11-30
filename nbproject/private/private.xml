@@ -3,9 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Cristina/Documents/NetBeansProjects/ServerBradycardia/src/serverbradycardia/conector.java</file>
-            <file>file:/C:/Users/Cristina/Documents/NetBeansProjects/ServerBradycardia/src/serverbradycardia/Main.java</file>
-            <file>file:/C:/Users/Cristina/Documents/NetBeansProjects/ServerBradycardia/src/serverbradycardia/ServerBradycardia.java</file>
+            <file>file:/Users/carmen/NetBeansProjects/BradycardiaServer/src/Pojos/Patient.java</file>
+            <file>file:/Users/carmen/NetBeansProjects/BradycardiaServer/src/serverbradycardia/ServerThreads.java</file>
+            <file>file:/Users/carmen/NetBeansProjects/BradycardiaServer/src/Utilities/ConnectionClient.java</file>
+            <file>file:/Users/carmen/NetBeansProjects/BradycardiaServer/src/BITalino/BITalino.java</file>
+            <file>file:/Users/carmen/NetBeansProjects/BradycardiaServer/src/Utilities/Exceptions.java</file>
         </group>
     </open-files>
 </project-private>
