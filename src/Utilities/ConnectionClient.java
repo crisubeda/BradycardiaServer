@@ -75,8 +75,9 @@ public class ConnectionClient {
         return datos;
     }
 
-    public static void getData(InputStream inputStream) {
+    public static boolean getData(InputStream inputStream) {
         int byteRead;
+        boolean stop = false;
         try {
             byteRead = inputStream.read();
             char caracter = (char) byteRead;
@@ -89,8 +90,11 @@ public class ConnectionClient {
                 Reads.ReadClient(inputStream);//bitalino....
             }
         } catch (IOException ex) {
+            stop = true;
             Logger.getLogger(ConnectionClient.class.getName()).log(Level.SEVERE, null, ex);
         }
+        stop = true;
+        return stop;
     }
 
 }
