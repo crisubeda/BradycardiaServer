@@ -39,7 +39,8 @@ public class Reads {
             }
 
         } catch (IOException ex) {
-            Logger.getLogger(Reads.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error en 42 de reads");
+            //Logger.getLogger(Reads.class.getName()).log(Level.SEVERE, null, ex);
         }
         return datos;
     }
