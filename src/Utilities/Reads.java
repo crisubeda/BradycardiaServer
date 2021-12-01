@@ -24,15 +24,21 @@ public class Reads {
         try {
             while ((byteRead = inputStream.read()) != -1) {
                 char a = (char) byteRead;
+                System.out.println("char a es : " + a);
                 while (a != ';' || byteRead != -1) {
                     string = string + a;
+                    System.out.println("string es: " + string);
                     byteRead = inputStream.read();
-                    a = (char) byteRead;
+                    a = (char) byteRead;  
+                    System.out.println("a ahora es: "+ a);
                 }
-                if (i != 0) {
+                i++;//añadido
+                if (i != 0) {//no se mete en este if
                     datos[i] = string;
                     string = "";
+                    System.out.println("datos va a ser:" +  datos[i]);
                     i++;
+                
                 } else {
                     string = "";
                 }

@@ -27,7 +27,7 @@ public class ServerThreads {
         ServerSocket serverSocket = new ServerSocket(ip);
         try {
             while (true) {
-                //Thie executes when we have a client
+                //This executes when we have a client
                 Socket socket = serverSocket.accept();
                 //Cada vez que recibo una conexion creo un nuevo thread con el scoket
                 new Thread(new ServerThreadsClient(socket)).start();

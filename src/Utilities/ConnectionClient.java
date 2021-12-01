@@ -81,10 +81,12 @@ public class ConnectionClient {
         try {
             byteRead = inputStream.read();
             char caracter = (char) byteRead;
-            if (caracter == 'p') {
-                String[] data = Reads.ReadClient(inputStream);
-                System.out.println(data[0]);
-                patient = patientManager.getPatientByUsername(data[0]);
+            if (caracter == 'P') {
+                //System.out.println("ha leido la p");
+                String[] data = Reads.ReadClient(inputStream);//EL ERROR ESTA AQUI
+                //System.out.println("data es:" + data[0] + " " + data[1]);
+                //System.out.println(data[0] + "este es el error");
+                patient = patientManager.getPatientByUsername(data[0]);//NO RECIBE EL DATA CORRESPONDIENTE
                 System.out.println("Name: " + patient.getFullName());
                 //meter tambien el password cuanod lo tengamos
             } else if (caracter == 'b') {
@@ -92,8 +94,8 @@ public class ConnectionClient {
             }
         } catch (IOException ex) {
             stop = true;
-            System.out.println("Error en linea 94");
-           // Logger.getLogger(ConnectionClient.class.getName()).log(Level.SEVERE, null, ex);
+            //System.out.println("Error en linea 94");
+            Logger.getLogger(ConnectionClient.class.getName()).log(Level.SEVERE, null, ex);
         }
         stop = true;
         return stop;
