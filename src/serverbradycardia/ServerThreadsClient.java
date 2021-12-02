@@ -8,8 +8,7 @@ package serverbradycardia;
 import Pojos.Patient;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -50,18 +49,27 @@ public class ServerThreadsClient implements Runnable {
     }
 
     public static void sendPatient(Patient patient) {
-        int i = 0;
-        OutputStream outputStream = null;
-        ObjectOutputStream objectOutputStream = null;
+
+        String mes = patient.toString();
         try {
+            PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
+            printWriter.println(mes);
+
+            /*int i = 0;
+            OutputStream outputStream = null;
+            ObjectOutputStream objectOutputStream = null;
+            try {
             outputStream = socket.getOutputStream();
             objectOutputStream = new ObjectOutputStream(outputStream);
             objectOutputStream.writeObject(patient);
             System.out.println("Se ha mandado ya!");
             outputStream.flush();
             objectOutputStream.flush();
-        } catch (IOException ex) {
+            } catch (IOException ex) {
             System.out.println("ERROR");
+            }*/
+        } catch (IOException ex) {
+            Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
