@@ -5,49 +5,40 @@
  */
 package Utilities;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  *
  * @author carmen
  */
 public class Reads {
 
-    public static String[] ReadClient(InputStream inputStream) {
+    public static String[] ReadClient(String introd) {
         int byteRead;
         int i = 0;
         String string = "";
-        String[] datos = {"a", "a"};
-        try {
-            while ((byteRead = inputStream.read()) != -1) {
-                char a = (char) byteRead;
-                System.out.println("char a es : " + a);
-                while (a != ';' || byteRead != -1) {
-                    string = string + a;
-                    System.out.println("string es: " + string);
-                    byteRead = inputStream.read();
-                    a = (char) byteRead;  
-                    System.out.println("a ahora es: "+ a);
-                }
-                i++;//añadido
-                if (i != 0) {//no se mete en este if
-                    datos[i] = string;
-                    string = "";
-                    System.out.println("datos va a ser:" +  datos[i]);
-                    i++;
-                
-                } else {
-                    string = "";
-                }
+        String[] datos = new String[2];
+        int contador = 2;
+        while (contador != introd.length()) {
+            char a = introd.charAt(contador);
+            System.out.println("char a es : " + a);
+            while (a != ';' || contador != introd.length()) {
+                string = string + a;
+                System.out.println("string es: " + string);
+                contador++;
+                a = introd.charAt(contador);
+                System.out.println("a ahora es: " + a);
             }
+            i++;//añadido
+            if (i != 0) {//no se mete en este if
+                datos[i] = string;
+                string = "";
+                System.out.println("datos va a ser:" + datos[i]);
+                i++;
 
-        } catch (IOException ex) {
-            System.out.println("Error en 42 de reads");
-            //Logger.getLogger(Reads.class.getName()).log(Level.SEVERE, null, ex);
+            } else {
+                string = "";
+            }
         }
+
         return datos;
     }
 }

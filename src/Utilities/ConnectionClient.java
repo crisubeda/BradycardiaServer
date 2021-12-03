@@ -13,9 +13,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import serverbradycardia.*;
 
 /**
  *
@@ -75,30 +73,30 @@ public class ConnectionClient {
         return datos;
     }
 
-    public static boolean getData(InputStream inputStream) {
-        int byteRead;
+    public static Patient getData(String introd) {
         boolean stop = false;
-        try {
-            byteRead = inputStream.read();
-            char caracter = (char) byteRead;
-            if (caracter == 'P') {
-                //System.out.println("ha leido la p");
-                String[] data = Reads.ReadClient(inputStream);//EL ERROR ESTA AQUI
-                //System.out.println("data es:" + data[0] + " " + data[1]);
-                //System.out.println(data[0] + "este es el error");
-                patient = patientManager.getPatientByUsername(data[0]);//NO RECIBE EL DATA CORRESPONDIENTE
-                System.out.println("Name: " + patient.getFullName());
-                //meter tambien el password cuanod lo tengamos
-            } else if (caracter == 'b') {
-                Reads.ReadClient(inputStream);//bitalino....
-            }
-        } catch (IOException ex) {
-            stop = true;
-            //System.out.println("Error en linea 94");
-            Logger.getLogger(ConnectionClient.class.getName()).log(Level.SEVERE, null, ex);
+        Patient p = new Patient();
+        if (introd.charAt(0) == 'p') {
+            //System.out.println("ha leido la p");
+            String[] data = Reads.ReadClient(introd);//EL ERROR ESTA AQUI
+            System.out.println("username: " + data[0]);
+            System.out.println("pass: " + data[1]);
+            //System.out.println("data es:" + data[0] + " " + data[1]);
+            //System.out.println(data[0] + "este es el error");
+            //patient = patientManager.getPatientByUsername(data[0]);//NO RECIBE EL DATA CORRESPONDIENTE
+            p = new Patient(1, "Cristina", "CrisMola", "Calle baloncesto", "68970896979", "c@ceu.es", "nada super sana", 2, "98:D3:91:FD:69:49");
+            // System.out.println("Name: " + patient.getFullName());
+            //meter tambien el password cuanod lo tengamos
+        } else if (introd.charAt(0) == 'p') {
+            Reads.ReadClient(introd);//bitalino....
         }
-        stop = true;
-        return stop;
+
+        return p;
+    }
+
+    public static void sendPatient(Patient p, ServerThreadsClient serverThreadsClient) {
+        //Patient p = new Patient(1, "Cristina", "CrisMola", "Calle baloncesto", "68970896979", "c@ceu.es", "nada super sana", 2, "98:D3:91:FD:69:49");
+        serverThreadsClient.sendPatient(p);
     }
 
 }
