@@ -8,7 +8,6 @@ package Utilities;
 import Pojos.Patient;
 import db.interfaces.DBManager;
 import db.interfaces.PatientManager;
-import db.sql.SQLManager;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -23,9 +22,9 @@ public class ConnectionClient {
 
     public static void initialiceAll(DBManager dbManager, PatientManager patientManager, Patient patient) {
         patient = new Patient();
-        dbManager = new SQLManager();
-        dbManager.connect();
-        patientManager = dbManager.getPatientManager();
+        // dbManager = new SQLManager();
+        // dbManager.connect();
+        // patientManager = dbManager.getPatientManager();
     }
 
     public static String[] getDataFromFile() throws IOException {
@@ -79,7 +78,7 @@ public class ConnectionClient {
             System.out.println("pass: " + data[1]);
             //System.out.println("data es:" + data[0] + " " + data[1]);
             //System.out.println(data[0] + "este es el error");
-            patient = patientManager.getPatientByUsername(data[0]);//NO RECIBE EL DATA CORRESPONDIENTE
+            //   patient = patientManager.getPatientByUsername(data[0]);//NO RECIBE EL DATA CORRESPONDIENTE
             //p = new Patient(1, "Cristina", "CrisMola", "Calle baloncesto", "68970896979", "c@ceu.es", "nada super sana", 2, "98:D3:91:FD:69:49");
             // System.out.println("Name: " + patient.getFullName());
             //meter tambien el password cuanod lo tengamos

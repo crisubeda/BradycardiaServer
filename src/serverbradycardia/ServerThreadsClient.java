@@ -35,7 +35,8 @@ public class ServerThreadsClient implements Runnable {
     public void run() {
 
         BufferedReader bufferedReader;
-        Utilities.ConnectionClient.initialiceAll(dbManager, patientManager, patient);
+        //Utilities.ConnectionClient.initialiceAll(dbManager, patientManager, patient);
+        patient = new Patient();
         try {
             bufferedReader = new BufferedReader(
                     new InputStreamReader(socket.getInputStream()));
@@ -51,9 +52,9 @@ public class ServerThreadsClient implements Runnable {
                     System.out.println("head: " + head);
                     if (head.equals("p#")) {
                         System.out.println("si es un patient lo que ha llegado: " + introd.charAt(0));
-                        Patient p = ConnectionClient.getData(introd, patient, patientManager);
-                        if (p.getFullName().equals("")) {
-                            sendPatient(p);
+                        patient = ConnectionClient.getData(introd, patient, patientManager);
+                        if (patient.getFullName().equals("")) {
+                            sendPatient(patient);
                         } else {
                             System.out.println("No se ha encontrado");
                         }
@@ -80,6 +81,7 @@ public class ServerThreadsClient implements Runnable {
 
         String mes = patient.toString();
         try {
+
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
             printWriter.println(mes);
 
