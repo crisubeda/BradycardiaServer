@@ -6,6 +6,7 @@
 package Utilities;
 
 import Pojos.Patient;
+import db.interfaces.PatientManager;
 
 /**
  *
@@ -16,10 +17,10 @@ public class Exceptions {
     Patient patient = new Patient();
     // PatientManager patientManager;
 
-    public static boolean checkUsername(boolean patient, String username) {
+    public static boolean checkUsername(boolean patient, String username, PatientManager patientManager) {
         boolean free = false;
         if (patient) {
-            Patient a = ConnectionClient.patientManager.getPatientByUsername(username);
+            Patient a = patientManager.getPatientByUsername(username);
             if (a == null) {
                 free = true;
             }

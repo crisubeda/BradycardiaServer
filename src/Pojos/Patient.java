@@ -36,7 +36,7 @@ public class Patient {
         this.diagnosis = diagnosis;
         this.docId = docId;
         this.macBitalino = mac;
-        this.bitalino = new BITalino();
+        this.bitalino = null;
     }
 
     public Patient(String username, String fullname, byte[] password) {

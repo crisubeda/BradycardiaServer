@@ -21,15 +21,11 @@ import serverbradycardia.*;
  */
 public class ConnectionClient {
 
-    public static PatientManager patientManager;
-    public static Patient patient;
-    public static DBManager dbManager;
-
-    public static void initialiceAll() {
+    public static void initialiceAll(DBManager dbManager, PatientManager patientManager, Patient patient) {
         patient = new Patient();
         dbManager = new SQLManager();
         dbManager.connect();
-        PatientManager patientManager = dbManager.getPatientManager();
+        patientManager = dbManager.getPatientManager();
     }
 
     public static String[] getDataFromFile() throws IOException {
@@ -73,25 +69,25 @@ public class ConnectionClient {
         return datos;
     }
 
-    public static Patient getData(String introd) {
+    public static Patient getData(String introd, Patient patient, PatientManager patientManager) {
         boolean stop = false;
         Patient p = new Patient();
         if (introd.charAt(0) == 'p') {
             //System.out.println("ha leido la p");
-            String[] data = Reads.ReadClient(introd);//EL ERROR ESTA AQUI
+            String[] data = Reads.ReadB(introd);//EL ERROR ESTA AQUI
             System.out.println("username: " + data[0]);
             System.out.println("pass: " + data[1]);
             //System.out.println("data es:" + data[0] + " " + data[1]);
             //System.out.println(data[0] + "este es el error");
-            //patient = patientManager.getPatientByUsername(data[0]);//NO RECIBE EL DATA CORRESPONDIENTE
-            p = new Patient(1, "Cristina", "CrisMola", "Calle baloncesto", "68970896979", "c@ceu.es", "nada super sana", 2, "98:D3:91:FD:69:49");
+            patient = patientManager.getPatientByUsername(data[0]);//NO RECIBE EL DATA CORRESPONDIENTE
+            //p = new Patient(1, "Cristina", "CrisMola", "Calle baloncesto", "68970896979", "c@ceu.es", "nada super sana", 2, "98:D3:91:FD:69:49");
             // System.out.println("Name: " + patient.getFullName());
             //meter tambien el password cuanod lo tengamos
         } else if (introd.charAt(0) == 'p') {
-            Reads.ReadClient(introd);//bitalino....
+            //Reads.ReadA(introd);//bitalino....
         }
 
-        return p;
+        return patient;
     }
 
     public static void sendPatient(Patient p, ServerThreadsClient serverThreadsClient) {

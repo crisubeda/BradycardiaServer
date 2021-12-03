@@ -7,6 +7,8 @@ package serverbradycardia;
 
 import Pojos.Patient;
 import Utilities.ConnectionClient;
+import db.interfaces.DBManager;
+import db.interfaces.PatientManager;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,6 +23,9 @@ public class ServerThreadsClient implements Runnable {
 
     int byteRead;
     public static Socket socket;
+    public static PatientManager patientManager;
+    public static Patient patient;
+    public static DBManager dbManager;
 
     public ServerThreadsClient(Socket socket) {
         this.socket = socket;
@@ -30,6 +35,7 @@ public class ServerThreadsClient implements Runnable {
     public void run() {
 
         BufferedReader bufferedReader;
+        Utilities.ConnectionClient.initialiceAll(dbManager, patientManager, patient);
         try {
             bufferedReader = new BufferedReader(
                     new InputStreamReader(socket.getInputStream()));
@@ -45,8 +51,12 @@ public class ServerThreadsClient implements Runnable {
                     System.out.println("head: " + head);
                     if (head.equals("p#")) {
                         System.out.println("si es un patient lo que ha llegado: " + introd.charAt(0));
-                        Patient p = ConnectionClient.getData(introd);
-                        sendPatient(p);
+                        Patient p = ConnectionClient.getData(introd, patient, patientManager);
+                        if (p.getFullName().equals("")) {
+                            sendPatient(p);
+                        } else {
+                            System.out.println("No se ha encontrado");
+                        }
                     }
                 }
 
