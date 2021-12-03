@@ -20,7 +20,7 @@ public class Reads {
         while (contador != introd.length()) {
             char a = introd.charAt(contador);
             System.out.println("char a es : " + a);
-            while (a != ';' || contador != introd.length()) {
+            while ((char) a != ';' || contador != introd.length()) {
                 string = string + a;
                 System.out.println("string es: " + string);
                 contador++;
