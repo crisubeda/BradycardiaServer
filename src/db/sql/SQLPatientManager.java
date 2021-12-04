@@ -115,10 +115,10 @@ public class SQLPatientManager implements PatientManager {
     }
 
     public Patient getPatientByUsername(String username) {
+        System.out.println("Se ha metido en buscar por nombre de usuario");
         Patient patient = new Patient();
         try {
-            String sqlpatient = "SELECT * FROM Patient WHERE username=?";
-
+            String sqlpatient = "SELECT * FROM Patient WHERE username LIKE ?";
             PreparedStatement stm = c.prepareStatement(sqlpatient);
             stm.setString(1, username);
             ResultSet rs = stm.executeQuery();
@@ -137,12 +137,10 @@ public class SQLPatientManager implements PatientManager {
                 patient = new Patient(patID, name, username2, address, phoneNumber, email, diagnosis, docID, macBitalino);
                 System.out.println(patient.getFullName());
             }
-
         } catch (SQLException e) {
             patient = null;
             e.printStackTrace();
         }
-
         return patient;
     }
 }

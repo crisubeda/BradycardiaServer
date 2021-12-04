@@ -7,6 +7,7 @@ package serverbradycardia;
 
 import Pojos.Patient;
 import Utilities.ConnectionClient;
+import db.sql.*;
 import db.interfaces.DBManager;
 import db.interfaces.PatientManager;
 import java.io.BufferedReader;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+
 
 /**
  *
@@ -26,6 +28,7 @@ public class ServerThreadsClient implements Runnable {
     public static PatientManager patientManager;
     public static Patient patient;
     public static DBManager dbManager;
+    public static SQLManager sqlManager;
 
     public ServerThreadsClient(Socket socket) {
         this.socket = socket;
@@ -37,22 +40,24 @@ public class ServerThreadsClient implements Runnable {
         BufferedReader bufferedReader;
         //Utilities.ConnectionClient.initialiceAll(dbManager, patientManager, patient);
         patient = new Patient();
+        System.out.println("Estoy antes del connect");
+        sqlManager.connect();
+        patientManager = dbManager.getPatientManager();
         try {
-            bufferedReader = new BufferedReader(
-                    new InputStreamReader(socket.getInputStream()));
+            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
             boolean stop = true;
             while (true) {
                 while (bufferedReader.readLine() != null) {
-                    String introd = bufferedReader.readLine();
-                    System.out.println("lo que llega: " + introd);
-                    String uno = Character.toString(introd.charAt(0));
-                    String dos = Character.toString(introd.charAt(1));
+                    String line = bufferedReader.readLine();
+                    String uno = Character.toString(line.charAt(0));
+                    String dos = Character.toString(line.charAt(1));
                     String head = uno.concat(dos);
-                    System.out.println("head: " + head);
                     if (head.equals("p#")) {
-                        System.out.println("si es un patient lo que ha llegado: " + introd.charAt(0));
-                        patient = ConnectionClient.getData(introd, patient, patientManager);
+                        //Como lo que llega es un paciente, vamos a coger toda su información de la base 
+                        //de datos
+                        patient = ConnectionClient.getData(line, patient, patientManager);
+                        System.out.println("Ya he cogido toda la información del patient");
                         if (patient.getFullName().equals("")) {
                             sendPatient(patient);
                         } else {
@@ -60,8 +65,7 @@ public class ServerThreadsClient implements Runnable {
                         }
                     }
                 }
-
-//stop = Utilities.ConnectionClient.getData(introd);
+            //stop = Utilities.ConnectionClient.getData(introd);
             }
         } catch (IOException ex) {
             System.out.println("Error en run de serverThreadsClient");
@@ -79,11 +83,11 @@ public class ServerThreadsClient implements Runnable {
 
     public void sendPatient(Patient patient) {
 
-        String mes = patient.toString();
+        String patientToClient = patient.toString();
         try {
 
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
-            printWriter.println(mes);
+            printWriter.println(patientToClient);
 
             /*int i = 0;
             OutputStream outputStream = null;

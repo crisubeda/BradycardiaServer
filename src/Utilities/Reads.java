@@ -11,49 +11,15 @@ package Utilities;
  */
 public class Reads {
 
-    /* public static String[] ReadClient(String introd) {
+    public static String[] ReadDatos(String line) {
         int byteRead;
         int i = 0;
         String string = "";
         String[] datos = new String[2];
         int contador = 2;
-        while (contador != introd.length()) {
-            char a = introd.charAt(contador);
-            System.out.println("char a es : " + a);
-            while ((char) a != ';' || contador != introd.length()) {
-                string = string + a;
-                System.out.println("string es: " + string);
-                contador++;
-                a = introd.charAt(contador);
-                System.out.println("a ahora es: " + a);
-            }
-            i++;//añadido
-            if (i != 0) {//no se mete en este if
-                datos[i] = string;
-                string = "";
-                System.out.println("datos va a ser:" + datos[i]);
-                i++;
-
-            } else {
-                string = "";
-            }
-        }
-
-        return datos;
-    }*/
-    public static String[] ReadB(String line) {
-        int byteRead;
-        int i = 0;
-        String string = "";
-        String[] datos = new String[2];
-        int contador = 2;
-        System.out.println("la longitud de la linea es: " + line.length());
-        System.out.println("llega: " + line);
         while (contador <= line.length() - 1) {
             char a = line.charAt(contador);
             while ((char) a != ';' && (contador != (line.length()))) {
-                System.out.println("Contador es: " + contador);
-                System.out.println("string es: " + string);
                 a = line.charAt(contador);
                 if (a != ';') {
                     string = string + a;
@@ -63,7 +29,6 @@ public class Reads {
             contador++;
             datos[i] = string;
             string = "";
-            System.out.println("datos va a ser:" + datos[i]);
             i++;
         }
         return datos;
