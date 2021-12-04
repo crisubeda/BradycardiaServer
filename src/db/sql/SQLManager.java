@@ -42,14 +42,10 @@ public class SQLManager implements DBManager {
 
     @Override
     public void connect() {
-        System.out.println("Me he metido en el connect antes del try");
         try {
-            System.out.println("Me he metido en el metodo connect");
             Class.forName("com.mysql.jdbc.Driver");
             String ipFromConfigFile = "";
-            System.out.println("Antes de la contraseña");
-            this.c = DriverManager.getConnection("jdbc:mysql://" + ipFromConfigFile + "/dbbradycardia?user=root&password=720419Mrc*");
-            System.out.println("Después de la contraseña");
+            this.c = DriverManager.getConnection("jdbc:mysql://" + ipFromConfigFile + "/dbbradycardia?user=root&password=Cris.2102");
             patient = new SQLPatientManager(c);
             doctor = new SQLDoctorManager(c);
             //esto es para prueba:

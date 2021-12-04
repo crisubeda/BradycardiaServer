@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -40,8 +42,8 @@ public class ServerThreadsClient implements Runnable {
         BufferedReader bufferedReader;
         //Utilities.ConnectionClient.initialiceAll(dbManager, patientManager, patient);
         patient = new Patient();
-        System.out.println("Estoy antes del connect");
-        sqlManager.connect();
+        dbManager = new SQLManager();
+        dbManager.connect();
         patientManager = dbManager.getPatientManager();
         try {
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -58,18 +60,20 @@ public class ServerThreadsClient implements Runnable {
                         //de datos
                         patient = ConnectionClient.getData(line, patient, patientManager);
                         System.out.println("Ya he cogido toda la información del patient");
-                        if (patient.getFullName().equals("")) {
-                            sendPatient(patient);
-                        } else {
+                       // if (patient.getFullName().equals(patient)) {
+                        sendPatient(patient);
+                        System.out.println("Patient toString: " + patient.toString());
+                        //}
+                    /*else {
                             System.out.println("No se ha encontrado");
-                        }
+                        }*/
                     }
                 }
             //stop = Utilities.ConnectionClient.getData(introd);
             }
         } catch (IOException ex) {
-            System.out.println("Error en run de serverThreadsClient");
-            // Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
+           // System.out.println("Error en run de serverThreadsClient");
+            Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
         }
         /*while ((byteRead = inputStream.read()) != -1) {
                 char caracter = (char) byteRead;

@@ -37,7 +37,7 @@ public class ServerThreads {
                 new Thread(serverTC).start();
             }
         } finally {
-            releaseResourcesServer(serverSocket);
+            //releaseResourcesServer(serverSocket);
         }
     }
 
