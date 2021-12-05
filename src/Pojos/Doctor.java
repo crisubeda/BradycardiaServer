@@ -17,6 +17,12 @@ public class Doctor {
     String email;
 
     private byte[] password;
+    
+    public Doctor() {
+        this.fullName = "";
+        this.username = "";
+        //this.password = "";
+    }
 
     public Doctor(String username, String fullname, byte[] password) {
         super();
@@ -29,6 +35,13 @@ public class Doctor {
         super();
         this.fullName = fullName;
         this.username = username;
+    }
+
+    public Doctor(Integer ID, String name, String username2, String email) {
+        this.ID = ID;
+        this.username = username2;
+        this.email = email;
+        this.fullName = name;
     }
     public String getEmail() {
         return email;
@@ -60,5 +73,10 @@ public class Doctor {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Override
+    public String toString() {
+        return "d#" + ID + ";" + fullName + ";" + username + ";" + email + ";#";
     }
 }

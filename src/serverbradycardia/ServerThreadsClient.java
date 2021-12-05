@@ -5,10 +5,12 @@
  */
 package serverbradycardia;
 
+import Pojos.Doctor;
 import Pojos.Patient;
 import Utilities.ConnectionClient;
 import db.sql.*;
 import db.interfaces.DBManager;
+import db.interfaces.DoctorManager;
 import db.interfaces.PatientManager;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,12 +30,21 @@ public class ServerThreadsClient implements Runnable {
     int byteRead;
     public static Socket socket;
     public static PatientManager patientManager;
+    public static DoctorManager doctorManager;
     public static Patient patient;
     public static DBManager dbManager;
     public static SQLManager sqlManager;
+    public static Doctor doctor;
+    //public static PrintWriter printWriter;
 
     public ServerThreadsClient(Socket socket) {
         this.socket = socket;
+        /*try {
+            printWriter = new PrintWriter(socket.getOutputStream(), true);
+        } catch (IOException ex) {
+            System.out.println("Error, no se ha podido enviar datos");
+            //Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
     }
 
     @Override
@@ -42,8 +53,10 @@ public class ServerThreadsClient implements Runnable {
         BufferedReader bufferedReader;
         //Utilities.ConnectionClient.initialiceAll(dbManager, patientManager, patient);
         patient = new Patient();
+        doctor = new Doctor();
         dbManager = new SQLManager();
         dbManager.connect();
+        doctorManager= dbManager.getDoctorManager();
         patientManager = dbManager.getPatientManager();
         try {
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -67,6 +80,20 @@ public class ServerThreadsClient implements Runnable {
                     /*else {
                             System.out.println("No se ha encontrado");
                         }*/
+                    }else if(head.equals("d#")) {
+                        //Como lo que llega es un paciente, vamos a coger toda su información de la base 
+                        //de datos
+                        doctor = ConnectionClient.getDataDoctor(line,doctor,doctorManager);
+                        if (doctor == null){
+                            System.out.println("El doctor es null");
+                            PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
+                            printWriter.println("error");
+                        }
+                        else {
+                            System.out.println("Doctor toString: " + doctor.toString());
+                            PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
+                            printWriter.println(doctor.toString());
+                        }
                     }
                 }
             //stop = Utilities.ConnectionClient.getData(introd);
@@ -89,7 +116,6 @@ public class ServerThreadsClient implements Runnable {
 
         String patientToClient = patient.toString();
         try {
-
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
             printWriter.println(patientToClient);
 
@@ -107,7 +133,7 @@ public class ServerThreadsClient implements Runnable {
             System.out.println("ERROR");
             }*/
         } catch (IOException ex) {
-            System.out.println("Error en sendP de serverThreadsClient");
+            System.out.println("Error en send de serverThreadsClient");
             // Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

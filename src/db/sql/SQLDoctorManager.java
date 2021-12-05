@@ -6,6 +6,7 @@
 package db.sql;
 
 import Pojos.Doctor;
+import Pojos.Patient;
 import db.interfaces.DoctorManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -72,27 +73,29 @@ public class SQLDoctorManager implements DoctorManager{
             Logger.getLogger(SQLPatientManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    @Override
-    public Integer searchByFullName(String fullname){
-        Integer patID = null;
-		try
-		{
-			String sqlfullname = "SELECT ID FROM patient WHERE fullname=?";
-			PreparedStatement stm = c.prepareStatement(sqlfullname);
-			stm.setString(1,fullname);
-			ResultSet rs = stm.executeQuery();
-			while(rs.next())
-			{
-				patID = rs.getInt("ID");
-			}
-			stm.close();
-			rs.close();
-		}
-		catch (SQLException e)
-		{
-			e.printStackTrace();
-		}
-		return patID;
-	}
+   
+    public Doctor getDoctorByUsername(String username) {
+        Doctor doctor = new Doctor();
+        try {
+            String sqlpatient = "SELECT * FROM Doctor WHERE username LIKE ?";
+            PreparedStatement stm = c.prepareStatement(sqlpatient);
+            stm.setString(1, username);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Integer patID = rs.getInt("id");
+                String name = rs.getString("fullname");
+                String username2 = rs.getString("username");
+                String email = rs.getString("email");
+                // meter contraseña
+                System.out.println("name: "+ name);
+                doctor = new Doctor(patID, name, username2,email);
+                System.out.println(doctor.getFullName());
+            }
+        } catch (SQLException e) {
+            doctor = null;
+            //e.printStackTrace();
+        }
+        return doctor;
+    }
     }
 

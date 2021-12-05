@@ -139,7 +139,7 @@ public class SQLPatientManager implements PatientManager {
             }
         } catch (SQLException e) {
             patient = null;
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return patient;
     }

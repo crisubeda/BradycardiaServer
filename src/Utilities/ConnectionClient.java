@@ -5,8 +5,10 @@
  */
 package Utilities;
 
+import Pojos.Doctor;
 import Pojos.Patient;
 import db.interfaces.DBManager;
+import db.interfaces.DoctorManager;
 import db.interfaces.PatientManager;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -75,6 +77,7 @@ public class ConnectionClient {
             String[] data = Reads.ReadDatos(line);
             System.out.println("username: " + data[0]);
             System.out.println("pass: " + data[1]);
+            //checkPassword();
             System.out.println("Estoy antes del get PatientByUsername");
             patient = patientManager.getPatientByUsername(data[0]);
             //p = new Patient(1, "Cristina", "CrisMola", "Calle baloncesto", "68970896979", "c@ceu.es", "nada super sana", 2, "98:D3:91:FD:69:49");
@@ -86,8 +89,29 @@ public class ConnectionClient {
 
         return patient;
     }
+     public static Doctor getDataDoctor(String line, Doctor doctor, DoctorManager doctorManager) {
+        boolean stop = false;
+        Doctor doc = new Doctor();
+        if (line.charAt(0) == 'd') {
+            String[] data = Reads.ReadDatos(line);
+            System.out.println("username: " + data[0]);
+            System.out.println("pass: " + data[1]);
+            //checkPassword();
+            System.out.println("Estoy antes del get PatientByUsername");
+            doctor = doctorManager.getDoctorByUsername(data[0]);
+        } else if (line.charAt(0) == 'p') {
+            //Reads.ReadA(introd);//bitalino....
+        }
+
+        return doctor;
+    }
 
     public static void sendPatient(Patient p, ServerThreadsClient serverThreadsClient) {
+        //Patient p = new Patient(1, "Cristina", "CrisMola", "Calle baloncesto", "68970896979", "c@ceu.es", "nada super sana", 2, "98:D3:91:FD:69:49");
+        serverThreadsClient.sendPatient(p);
+    }
+    
+    public static void sendPatie(Patient p, ServerThreadsClient serverThreadsClient) {
         //Patient p = new Patient(1, "Cristina", "CrisMola", "Calle baloncesto", "68970896979", "c@ceu.es", "nada super sana", 2, "98:D3:91:FD:69:49");
         serverThreadsClient.sendPatient(p);
     }
