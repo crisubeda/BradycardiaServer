@@ -72,7 +72,7 @@ public class ConnectionClient {
 
     public static Patient getData(String line, Patient patient, PatientManager patientManager) {
         boolean stop = false;
-        Patient p = new Patient();
+        //Patient p = new Patient();
         if (line.charAt(0) == 'p') {
             String[] data = Reads.ReadDatos(line);
             System.out.println("username: " + data[0]);
@@ -80,7 +80,7 @@ public class ConnectionClient {
             //checkPassword();
             System.out.println("Estoy antes del get PatientByUsername");
             patient = patientManager.getPatientByUsername(data[0]);
-            //p = new Patient(1, "Cristina", "CrisMola", "Calle baloncesto", "68970896979", "c@ceu.es", "nada super sana", 2, "98:D3:91:FD:69:49");
+            // patient = new Patient(1, "Cristina", "CrisMola", "Calle baloncesto", "68970896979", "null", "nada super sana", 2, "98:D3:91:FD:69:49");
             // System.out.println("Name: " + patient.getFullName());
             //meter tambien el password cuanod lo tengamos
         } else if (line.charAt(0) == 'p') {
@@ -89,7 +89,8 @@ public class ConnectionClient {
 
         return patient;
     }
-     public static Doctor getDataDoctor(String line, Doctor doctor, DoctorManager doctorManager) {
+
+    public static Doctor getDataDoctor(String line, Doctor doctor, DoctorManager doctorManager) {
         boolean stop = false;
         Doctor doc = new Doctor();
         if (line.charAt(0) == 'd') {
@@ -110,7 +111,7 @@ public class ConnectionClient {
         //Patient p = new Patient(1, "Cristina", "CrisMola", "Calle baloncesto", "68970896979", "c@ceu.es", "nada super sana", 2, "98:D3:91:FD:69:49");
         serverThreadsClient.sendPatient(p);
     }
-    
+
     public static void sendPatie(Patient p, ServerThreadsClient serverThreadsClient) {
         //Patient p = new Patient(1, "Cristina", "CrisMola", "Calle baloncesto", "68970896979", "c@ceu.es", "nada super sana", 2, "98:D3:91:FD:69:49");
         serverThreadsClient.sendPatient(p);
