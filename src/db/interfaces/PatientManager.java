@@ -22,4 +22,6 @@ public interface PatientManager {
     public Patient getPatientById(int id);
 
     public Patient getPatientByUsername(String Username);
+    
+    public void modifyMac(Patient pat);
 }

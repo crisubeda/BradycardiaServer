@@ -80,6 +80,9 @@ public class ConnectionClient {
             //checkPassword();
             System.out.println("Estoy antes del get PatientByUsername");
             patient = patientManager.getPatientByUsername(data[0]);
+            if(!patient.getPassword().equals(data[1])){
+                patient.setEmail("null");
+            }
             // patient = new Patient(1, "Cristina", "CrisMola", "Calle baloncesto", "68970896979", "null", "nada super sana", 2, "98:D3:91:FD:69:49");
             // System.out.println("Name: " + patient.getFullName());
             //meter tambien el password cuanod lo tengamos

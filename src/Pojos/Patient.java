@@ -21,11 +21,11 @@ public class Patient {
     String email;
     String diagnosis;
     Integer docId;
-    private byte[] password;
-    private String macBitalino;
+    String password;
+    String macBitalino;
     private BITalino bitalino; //no guardar en base de datos
 
-    public Patient(int id, String fullname, String username, String adress, String phonenumber, String email, String diagnosis, int docId, String mac) {
+    public Patient(int id, String fullname, String username, String adress, String phonenumber, String email, String diagnosis, int docId, String password, String mac) {
         super();
         this.ID = id;
         this.fullName = fullname;
@@ -35,11 +35,12 @@ public class Patient {
         this.email = email;
         this.diagnosis = diagnosis;
         this.docId = docId;
+        this.password = password;
         this.macBitalino = mac;
         this.bitalino = null;
     }
 
-    public Patient(String username, String fullname, byte[] password) {
+    public Patient(String username, String fullname, String password) {
         super();
         this.fullName = fullName;
         this.username = username;
@@ -123,8 +124,12 @@ public class Patient {
         this.ID = ID;
     }
 
-    public void setPassword(byte[] password) {
+    public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public int getID() {

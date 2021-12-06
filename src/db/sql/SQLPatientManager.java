@@ -27,17 +27,18 @@ public class SQLPatientManager implements PatientManager {
     }
 
     public void createPatient(Patient pat) {
-        String sqlpatient = "INSERT INTO Patient (idPatient, nombre, username, address, phoneNumber, email, diagnosis, doctorId, macBitalino)"
-                + "VALUES (?,?,?,?,?,?,?,?)";
+        String sqlpatient = "INSERT INTO Patient (fullname, username, address, phoneNumber, email, diagnosis, idDoctor, pwd, macBitalino)"
+                + "VALUES (?,?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement stm = c.prepareStatement(sqlpatient);
-            stm.setString(2, pat.getFullName());
-            stm.setString(3, pat.getUsername());
-            stm.setString(4, pat.getAddress());
-            stm.setString(5, pat.getPhonenumber());
-            stm.setString(6, pat.getEmail());
-            stm.setString(7, pat.getDiagnosis());
-            stm.setInt(3, pat.getDocId());
+            stm.setString(1, pat.getFullName());
+            stm.setString(2, pat.getUsername());
+            stm.setString(3, pat.getAddress());
+            stm.setString(4, pat.getPhonenumber());
+            stm.setString(5, pat.getEmail());
+            stm.setString(6, pat.getDiagnosis());           
+            stm.setInt(7, pat.getDocId());
+            stm.setString(8, pat.getPassword());
             stm.setString(9, pat.getMacBitalino());
 
             stm.executeUpdate();
@@ -63,6 +64,21 @@ public class SQLPatientManager implements PatientManager {
 
     }
 
+    public void modifyMac(Patient pat) {
+        String sqlpatient = "UPDATE Patient SET macBitalino=? WHERE username=?";
+                try{
+                     PreparedStatement stm = c.prepareStatement(sqlpatient);
+                     stm.setString(1, pat.getMacBitalino());
+                     stm.setString(2, pat.getUsername());
+                     stm.executeUpdate();
+                     stm.close();
+                }catch (SQLException ex) {
+                     Logger.getLogger(SQLPatientManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+    }
+    
+    
     public void modifyPatient(Patient pat) {
 
         String sqlpatient = "UPDATE Patient SET fullname=?, username=?, address=?, phoneNumber=?, email=?, idDoctor=?, macBitalino=? WHERE id=?";
@@ -131,10 +147,11 @@ public class SQLPatientManager implements PatientManager {
                 String email = rs.getString("email");
                 Integer docID = rs.getInt("idDoctor");
                 String diagnosis = rs.getString("diagnosis");
+                String password = rs.getString("pwd");
                 String macBitalino = rs.getString("macBitalino");
                 // meter contraseña
                 System.out.println("name: "+ name);
-                patient = new Patient(patID, name, username2, address, phoneNumber, email, diagnosis, docID, macBitalino);
+                patient = new Patient(patID, name, username2, address, phoneNumber, email, diagnosis, docID, password, macBitalino);
                 System.out.println(patient.getFullName());
             }
         } catch (SQLException e) {

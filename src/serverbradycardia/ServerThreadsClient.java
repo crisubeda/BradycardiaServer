@@ -14,6 +14,9 @@ import db.interfaces.DoctorManager;
 import db.interfaces.PatientManager;
 import db.sql.*;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -54,10 +57,10 @@ public class ServerThreadsClient implements Runnable {
         //Utilities.ConnectionClient.initialiceAll(dbManager, patientManager, patient);
         patient = new Patient();
         doctor = new Doctor();
-        /*dbManager = new SQLManager();
+        dbManager = new SQLManager();
         dbManager.connect();
         doctorManager= dbManager.getDoctorManager();
-        patientManager = dbManager.getPatientManager();*/
+        patientManager = dbManager.getPatientManager();
         try {
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
@@ -66,6 +69,7 @@ public class ServerThreadsClient implements Runnable {
                 while (bufferedReader.readLine() != null) {
                     String line = bufferedReader.readLine();
                     if (line.equals("patient-login")) {
+                        boolean a = true;
                         System.out.println("Vamos a login");
                         line = bufferedReader.readLine();
                         String uno = Character.toString(line.charAt(0));
@@ -79,31 +83,63 @@ public class ServerThreadsClient implements Runnable {
                             // if (patient.getFullName().equals(patient)) {
                             sendPatient(patient);
                             System.out.println("Patient toString: " + patient.toString());
-                            line = bufferedReader.readLine();
-                            System.out.println("linea leida: " + line);
-                            if (line.equals("again")) {
-                                System.out.println("Se entra en again");
+                            while(a){
                                 line = bufferedReader.readLine();
-                                // patient = ConnectionClient.getData(line, patient, patientManager);
-                                patient = new Patient(1, "Cristina", "CrisMola", "Calle baloncesto", "68970896979", "c@usp.ceu.es", "nada super sana", 2, "98:D3:91:FD:69:49");
-                                sendPatient(patient);
-                                System.out.println("patient send: " + patient.toString());
-                            } else if (line.equals("done")) {
-                                //lo siguiente que haya que hacer si se ha login
+                                System.out.println("linea leida: " + line);
+                                if (line.equals("again")) {
+                                    System.out.println("Se entra en again");
+                                    line = bufferedReader.readLine();
+                                    patient = ConnectionClient.getData(line, patient, patientManager);
+                                    //patient = new Patient(1, "Cristina", "CrisMola", "Calle baloncesto", "68970896979", "c@usp.ceu.es", "nada super sana", 2, "98:D3:91:FD:69:49");
+                                    sendPatient(patient);
+                                    System.out.println("patient send: " + patient.toString());
+                                } else if (line.equals("done")) {
+                                    System.out.println("estoy doneeee");
+                                    //lo siguiente que haya que hacer si se ha login
+                                    a = false;
+                                    while(true){
+                                        line = bufferedReader.readLine();
+
+                                        if(line.equals("Introducebitalino")){
+                                            System.out.println("estamos en introducebitalino");
+                                            line = bufferedReader.readLine();
+                                            patient.setMacBitalino(line);
+                                            System.out.println(patient.toString());
+                                            patientManager.modifyMac(patient);
+                                            sendPatient(patient);
+
+                                        }else if(line.equals("GetData")){
+                                            File file = new File("fileBitalino");
+                                            BufferedWriter bw = new BufferedWriter(new FileWriter(file.getAbsolutePath()));
+                                            while((line=bufferedReader.readLine()) != null){  
+                                                bw.write(line);
+                                            }
+
+                                        }
+                                    }
+                                }else if (line.equals("back")){
+                                    a =false;                              
+                                }                           
                             }
                         }
                     } else if (line.equals("patient-register")) {
                         System.out.println("Vamos a register new patient");
+                        boolean b = true;
+                        while(b){
                         line = bufferedReader.readLine();
                         boolean done = PatientUtilities.regiterNewPatient(line, patient, patientManager);
                         if (done) {
                             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
                             printWriter.println("done");
+                            System.out.println("se mete en done");
+                            b = false;
                         } else {
                             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
                             printWriter.println("notpossible");
+                            System.out.println("se mete en el notpossible");
                         }
                     } //}
+                    }
                     /*else {
                             System.out.println("No se ha encontrado");
                         }*/ else {
