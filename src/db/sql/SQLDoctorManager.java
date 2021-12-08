@@ -27,13 +27,14 @@ public class SQLDoctorManager implements DoctorManager{
     }
     public void createDoctor(Doctor doc) 
 	{
-        String sqldoctor= "INSERT INTO Doctor (idDoctor, nombre, username, email)"
+        String sqldoctor= "INSERT INTO Doctor (idDoctor, fullname, username, email, pwd)"
 					+  "VALUES (?,?,?)";
         try {
             PreparedStatement stm = c.prepareStatement(sqldoctor);
             stm.setString(2,doc.getFullName());
             stm.setString(3,doc.getUsername()); 
             stm.setString(4,doc.getEmail());
+            stm.setString(5, doc.getPassword());
             
             stm.executeUpdate();
             stm.close();
@@ -59,7 +60,7 @@ public class SQLDoctorManager implements DoctorManager{
 
     public void modifyDoctor(Doctor doc){
         
-	String sqldoctor = "UPDATE Doctor SET name=?, username=?, email=? WHERE idDoctor=?";
+	String sqldoctor = "UPDATE Doctor SET fullname=?, username=?, email=? WHERE idDoctor=?";
          try {
             PreparedStatement stm = c.prepareStatement(sqldoctor);
             stm.setString(1, doc.getFullName());
