@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
 import serverbradycardia.*;
 
 /**
@@ -72,6 +74,8 @@ public class ConnectionClient {
 
     public static Patient getData(String line, Patient patient, PatientManager patientManager) {
         boolean stop = false;
+        Patient p = new Patient();
+        
         //Patient p = new Patient();
         if (line.charAt(0) == 'p') {
             String[] data = Reads.ReadDatos(line);
@@ -79,9 +83,9 @@ public class ConnectionClient {
             System.out.println("pass: " + data[1]);
             //checkPassword();
             System.out.println("Estoy antes del get PatientByUsername");
-            patient = patientManager.getPatientByUsername(data[0]);
-            if(!patient.getPassword().equals(data[1])){
-                patient.setEmail("null");
+            p= patientManager.getPatientByUsername(data[0]);
+            if(!p.getPassword().equals(data[1])){
+                p.setEmail("null");
             }
             // patient = new Patient(1, "Cristina", "CrisMola", "Calle baloncesto", "68970896979", "null", "nada super sana", 2, "98:D3:91:FD:69:49");
             // System.out.println("Name: " + patient.getFullName());
@@ -90,7 +94,7 @@ public class ConnectionClient {
             //Reads.ReadA(introd);//bitalino....
         }
 
-        return patient;
+        return p;
     }
 
     public static Doctor getDataDoctor(String line, Doctor doctor, DoctorManager doctorManager) {
@@ -101,23 +105,17 @@ public class ConnectionClient {
             System.out.println("username: " + data[0]);
             System.out.println("pass: " + data[1]);
             //checkPassword();
-            System.out.println("Estoy antes del get PatientByUsername");
-            doctor = doctorManager.getDoctorByUsername(data[0]);
+            System.out.println("Estoy antes del get getDataDoctor");
+            doc = doctorManager.getDoctorByUsername(data[0]);
         } else if (line.charAt(0) == 'p') {
             //Reads.ReadA(introd);//bitalino....
         }
-
-        return doctor;
+        return doc;
     }
 
     public static void sendPatient(Patient p, ServerThreadsClient serverThreadsClient) {
         //Patient p = new Patient(1, "Cristina", "CrisMola", "Calle baloncesto", "68970896979", "c@ceu.es", "nada super sana", 2, "98:D3:91:FD:69:49");
         serverThreadsClient.sendPatient(p);
     }
-
-    public static void sendPatie(Patient p, ServerThreadsClient serverThreadsClient) {
-        //Patient p = new Patient(1, "Cristina", "CrisMola", "Calle baloncesto", "68970896979", "c@ceu.es", "nada super sana", 2, "98:D3:91:FD:69:49");
-        serverThreadsClient.sendPatient(p);
-    }
-
+    
 }

@@ -16,4 +16,5 @@ public interface DoctorManager {
     public void deleteDoctor(Integer id);
     public void modifyDoctor(Doctor doc);
     public Doctor getDoctorByUsername(String username);
+    public String[] getNameByName(String name);
 }

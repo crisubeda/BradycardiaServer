@@ -20,8 +20,6 @@ public interface PatientManager {
 
     public void modifyPatient(Patient pat);
     
-    public void insertFile(File file, Patient pat);
-
     public Patient getPatientById(int id);
 
     public Patient getPatientByUsername(String Username);

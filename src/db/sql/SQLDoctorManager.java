@@ -76,27 +76,57 @@ public class SQLDoctorManager implements DoctorManager{
     }
    
     public Doctor getDoctorByUsername(String username) {
+        System.out.println("Se ha metido en getDoctorBy Username");
         Doctor doctor = new Doctor();
         try {
-            String sqlpatient = "SELECT * FROM Doctor WHERE username LIKE ?";
-            PreparedStatement stm = c.prepareStatement(sqlpatient);
+            String sqldoctor = "SELECT * FROM Doctor WHERE username LIKE ?";
+            PreparedStatement stm = c.prepareStatement(sqldoctor);
             stm.setString(1, username);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                Integer patID = rs.getInt("id");
+                Integer docID = rs.getInt("idDoctor");
                 String name = rs.getString("fullname");
                 String username2 = rs.getString("username");
                 String email = rs.getString("email");
                 // meter contraseña
                 System.out.println("name: "+ name);
-                doctor = new Doctor(patID, name, username2,email);
+                doctor = new Doctor(docID, name, username2,email);
                 System.out.println(doctor.getFullName());
             }
         } catch (SQLException e) {
             doctor = null;
+            System.out.println("Algo ha ido mal");
             //e.printStackTrace();
         }
         return doctor;
+    }
+    
+    
+    
+    @Override
+    public String[] getNameByName(String name) {
+        System.out.println("Hemos entrado y name es: " +name);
+        String[] listNames=new String[100];
+        int position=0;
+        String sqlpatient = "SELECT * FROM Patient WHERE fullname=?";
+        try {
+            PreparedStatement stm = c.prepareStatement(sqlpatient);
+            stm.setString(1, name+"%");
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                String fullname = rs.getString("fullname");
+                System.out.println("El fullname es: " +fullname);
+                listNames[position] = fullname;
+                position++;
+            }
+            rs.close();
+            stm.close();
+        } catch (SQLException ex) {
+            listNames = null;
+            Logger.getLogger(SQLPatientManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return listNames;
     }
     }
 

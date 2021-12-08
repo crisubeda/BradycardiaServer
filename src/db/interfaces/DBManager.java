@@ -14,4 +14,5 @@ public interface DBManager {
     public void disconnect();
     public PatientManager getPatientManager(); 
     public DoctorManager getDoctorManager();
+    public FilesManager getFilesManager();
 }

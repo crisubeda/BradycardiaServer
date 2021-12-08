@@ -21,6 +21,7 @@ public class SQLManager implements DBManager {
     private Connection c;
     private PatientManager patient;
     private DoctorManager doctor;
+    private FilesManager file;
 
     public SQLManager() {
         super();
@@ -39,15 +40,20 @@ public class SQLManager implements DBManager {
     public DoctorManager getDoctorManager() {
         return doctor;
     }
+    
+    public FilesManager getFilesManager() {
+        return file;
+    }
 
     @Override
     public void connect() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             String ipFromConfigFile = "";
-            this.c = DriverManager.getConnection("jdbc:mysql://" + ipFromConfigFile + "/dbbradycardia?user=root&password=Cris.2102");
+            this.c = DriverManager.getConnection("jdbc:mysql://" + ipFromConfigFile + "/dbbradycardia?user=root&password=720419Mrc*");
             patient = new SQLPatientManager(c);
             doctor = new SQLDoctorManager(c);
+            file = new SQLFilesManager(c);
             //esto es para prueba:
             /*Statement stm = c.createStatement();
            ResultSet rs = stm.executeQuery("select * from patient");

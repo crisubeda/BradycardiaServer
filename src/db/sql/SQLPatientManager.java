@@ -163,24 +163,5 @@ public class SQLPatientManager implements PatientManager {
         }
         return patient;
     }
-    
-    public void insertFile(File file, Patient pat){
-        FileInputStream input = null;
-        try {
-            input = new FileInputStream(file);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(SQLPatientManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        String sqlpatient = "INSERT INTO Patient(files) VALUES(?) WHERE id = ?";
-        try {
-            PreparedStatement stm = c.prepareStatement(sqlpatient);
-            stm.setBinaryStream(1, input);
-            stm.setInt(2, pat.getID());
-            stm.executeUpdate();
-            stm.close();
 
-        } catch (SQLException ex) {
-            Logger.getLogger(SQLPatientManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 }
