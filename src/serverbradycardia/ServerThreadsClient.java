@@ -18,6 +18,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -38,6 +39,7 @@ public class ServerThreadsClient implements Runnable {
     public static DBManager dbManager;
     public static SQLManager sqlManager;
     public static Doctor doctor;
+    public static File file;
     //public static PrintWriter printWriter;
 
     public ServerThreadsClient(Socket socket) {
@@ -61,12 +63,13 @@ public class ServerThreadsClient implements Runnable {
         dbManager.connect();
         doctorManager= dbManager.getDoctorManager();
         patientManager = dbManager.getPatientManager();
+       // file= new File(".");
         try {
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
             boolean stop = true;
-            while (true) {
-                while (bufferedReader.readLine() != null) {
+            boolean exit = false;
+                while (!exit) {
                     String line = bufferedReader.readLine();
                     if (line.equals("patient-login")) {
                         boolean a = true;
@@ -99,25 +102,40 @@ public class ServerThreadsClient implements Runnable {
                                     a = false;
                                     while(true){
                                         line = bufferedReader.readLine();
-
+                                        System.out.println("Line leida en while: "+ line);
                                         if(line.equals("Introducebitalino")){
                                             System.out.println("estamos en introducebitalino");
                                             line = bufferedReader.readLine();
+                                            if(!line.equals("back")){
                                             patient.setMacBitalino(line);
                                             System.out.println(patient.toString());
                                             patientManager.modifyMac(patient);
                                             sendPatient(patient);
-
-                                        }else if(line.equals("GetData")){
-                                            File file = new File("fileBitalino");
-                                            BufferedWriter bw = new BufferedWriter(new FileWriter(file.getAbsolutePath()));
-                                            while((line=bufferedReader.readLine()) != null){  
-                                                bw.write(line);
                                             }
 
+                                        }else if(line.equals("GetData")){
+                                             line = bufferedReader.readLine();
+                                            if(!line.equals("back")){
+                                              file= new File("./files/fileBit_"+patient.getUsername()+".txt");
+                                              patient.addFile(file);
+                                              FileWriter myWriter = new FileWriter(file);
+                                            while((line=bufferedReader.readLine()) != null && !line.equals("back")){  
+                                                myWriter.write(line);
+                                                System.out.println("line: "+line);
+                                            }
+                                            myWriter.close();
+                                            //meter en base de datos
+                                            String n ="./files/fileBit_"+patient.getUsername()+".txt";
+                                            patientManager.insertFile(file,patient);
+                                            }
+                                            
+                                        }else if (line.equals("release")){
+                                            exit=true;
+                                            break;
                                         }
                                     }
-                                }else if (line.equals("back")){
+                                    
+                                }else if (line.equals("back") || line.equals("release")){
                                     a =false;                              
                                 }                           
                             }
@@ -163,7 +181,8 @@ public class ServerThreadsClient implements Runnable {
                     }
                 }
                 //stop = Utilities.ConnectionClient.getData(introd);
-            }
+            System.out.println("fuera de todo");
+            releaseResourcesClient(bufferedReader, socket);
         } catch (IOException ex) {
             // System.out.println("Error en run de serverThreadsClient");
             Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -204,9 +223,10 @@ public class ServerThreadsClient implements Runnable {
         }
     }
 
-    /*  private static void releaseResourcesClient(InputStream inputStream, Socket socket) {
+      private static void releaseResourcesClient(BufferedReader bufferedReader, Socket socket) {
         try {
-            inputStream.close();
+            System.out.println("se han release los sources");
+            bufferedReader.close();
 
         } catch (IOException ex) {
             Logger.getLogger(ServerThreads.class
@@ -220,5 +240,5 @@ public class ServerThreadsClient implements Runnable {
             Logger.getLogger(ServerThreads.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
-    }*/
+    }
 }

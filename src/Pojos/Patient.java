@@ -6,6 +6,7 @@
 package Pojos;
 
 import BITalino.BITalino;
+import java.io.File;
 
 /**
  *
@@ -24,6 +25,7 @@ public class Patient {
     String password;
     String macBitalino;
     private BITalino bitalino; //no guardar en base de datos
+    File[] files;
 
     public Patient(int id, String fullname, String username, String adress, String phonenumber, String email, String diagnosis, int docId, String password, String mac) {
         super();
@@ -38,6 +40,7 @@ public class Patient {
         this.password = password;
         this.macBitalino = mac;
         this.bitalino = null;
+        this.files = new File[100];
     }
 
     public Patient(String username, String fullname, String password) {
@@ -151,7 +154,13 @@ public class Patient {
     public void setNewBitalino() {
         this.bitalino = new BITalino();
     }
-
+public void addFile(File newF){
+   for(int i=0; i< files.length;i++){
+        if(files[i]==null){
+             files[i]=newF;
+        }
+    }
+}
     @Override
     public String toString() {
         return "p#" + ID + ";" + fullName + ";" + username + ";" + address + ";" + phonenumber + ";" + email + ";" + diagnosis + ";" + docId + ";" + password + ";" + macBitalino + ";" + bitalino + ";#";
