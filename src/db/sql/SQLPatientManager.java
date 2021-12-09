@@ -7,9 +7,6 @@ package db.sql;
 
 import Pojos.Patient;
 import db.interfaces.PatientManager;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -39,7 +36,7 @@ public class SQLPatientManager implements PatientManager {
             stm.setString(3, pat.getAddress());
             stm.setString(4, pat.getPhonenumber());
             stm.setString(5, pat.getEmail());
-            stm.setString(6, pat.getDiagnosis());           
+            stm.setString(6, pat.getDiagnosis());
             stm.setInt(7, pat.getDocId());
             stm.setString(8, pat.getPassword());
             stm.setString(9, pat.getMacBitalino());
@@ -66,18 +63,30 @@ public class SQLPatientManager implements PatientManager {
 
     public void modifyMac(Patient pat) {
         String sqlpatient = "UPDATE Patient SET macBitalino=? WHERE username=?";
-        try{
-             PreparedStatement stm = c.prepareStatement(sqlpatient);
-             stm.setString(1, pat.getMacBitalino());
-             stm.setString(2, pat.getUsername());
-             stm.executeUpdate();
-             stm.close();
-        }catch (SQLException ex) {
-             Logger.getLogger(SQLPatientManager.class.getName()).log(Level.SEVERE, null, ex);
+        try {
+            PreparedStatement stm = c.prepareStatement(sqlpatient);
+            stm.setString(1, pat.getMacBitalino());
+            stm.setString(2, pat.getUsername());
+            stm.executeUpdate();
+            stm.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(SQLPatientManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
+
+    public void modifyDiagnosis(Patient pat) {
+        String sqlpatient = "UPDATE Patient SET diagnosis=? WHERE username=?";
+        try {
+            PreparedStatement stm = c.prepareStatement(sqlpatient);
+            stm.setString(1, pat.getDiagnosis());
+            stm.setString(2, pat.getUsername());
+            stm.executeUpdate();
+            stm.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(SQLPatientManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     public void modifyPatient(Patient pat) {
         String sqlpatient = "UPDATE Patient SET fullname=?, username=?, address=?, phoneNumber=?, email=?, idDoctor=?, macBitalino=? WHERE id=?";
         try {

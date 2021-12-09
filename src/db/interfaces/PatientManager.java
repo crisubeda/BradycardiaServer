@@ -6,7 +6,6 @@
 package db.interfaces;
 
 import Pojos.Patient;
-import java.io.File;
 
 /**
  *
@@ -19,10 +18,13 @@ public interface PatientManager {
     public void deletePatient(Integer id);
 
     public void modifyPatient(Patient pat);
-    
+
     public Patient getPatientById(int id);
 
     public Patient getPatientByUsername(String Username);
-    
+
     public void modifyMac(Patient pat);
+
+    public void modifyDiagnosis(Patient pat);
+
 }
