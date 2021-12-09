@@ -53,37 +53,32 @@ public class SQLPatientManager implements PatientManager {
     }
 
     public void deletePatient(Integer id) {
-
         String sqlpatient = "DELETE FROM Patient WHERE idPatient=?";
         try {
             PreparedStatement stm = c.prepareStatement(sqlpatient);
             stm.setInt(1, id);
             stm.executeUpdate();
             stm.close();
-
         } catch (SQLException ex) {
             Logger.getLogger(SQLPatientManager.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
     public void modifyMac(Patient pat) {
         String sqlpatient = "UPDATE Patient SET macBitalino=? WHERE username=?";
-                try{
-                     PreparedStatement stm = c.prepareStatement(sqlpatient);
-                     stm.setString(1, pat.getMacBitalino());
-                     stm.setString(2, pat.getUsername());
-                     stm.executeUpdate();
-                     stm.close();
-                }catch (SQLException ex) {
-                     Logger.getLogger(SQLPatientManager.class.getName()).log(Level.SEVERE, null, ex);
+        try{
+             PreparedStatement stm = c.prepareStatement(sqlpatient);
+             stm.setString(1, pat.getMacBitalino());
+             stm.setString(2, pat.getUsername());
+             stm.executeUpdate();
+             stm.close();
+        }catch (SQLException ex) {
+             Logger.getLogger(SQLPatientManager.class.getName()).log(Level.SEVERE, null, ex);
         }
-    
     }
     
     
     public void modifyPatient(Patient pat) {
-
         String sqlpatient = "UPDATE Patient SET fullname=?, username=?, address=?, phoneNumber=?, email=?, idDoctor=?, macBitalino=? WHERE id=?";
         try {
             PreparedStatement stm = c.prepareStatement(sqlpatient);
@@ -102,39 +97,7 @@ public class SQLPatientManager implements PatientManager {
         }
     }
 
-    public Patient getPatientById(int id) {
-
-        String sqlpatient = "SELECT * FROM Patient WHERE id=?";
-        Patient patient = new Patient();
-        try {
-            PreparedStatement stm = c.prepareStatement(sqlpatient);
-            stm.setInt(1, id);
-            ResultSet rs = stm.executeQuery();
-
-            while (rs.next()) {
-                Integer patID = rs.getInt("ID");
-                String name = rs.getString("Name");
-                String username = rs.getString("Username");
-                String address = rs.getString("Address");
-                String phoneNumber = rs.getString("PhoneNumber");
-                String email = rs.getString("Email");
-                String diagnosis = rs.getString("Diagnosis");
-                String macBitalino = rs.getString("macBitalino");
-                //obtener nombre del doctor
-               // patient = new Patient(patID, name, username, address, phoneNumber, email, diagnosis, macBitalino);
-
-            }
-            rs.close();
-            stm.close();
-        } catch (SQLException ex) {
-            patient = null;
-            Logger.getLogger(SQLPatientManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return patient;
-    }
-
     public Patient getPatientByUsername(String username) {
-        System.out.println("Se ha metido en buscar por nombre de usuario");
         Patient patient = new Patient();
         try {
             String sqlpatient = "SELECT * FROM Patient WHERE username LIKE ?";
@@ -152,16 +115,16 @@ public class SQLPatientManager implements PatientManager {
                 String diagnosis = rs.getString("diagnosis");
                 String password = rs.getString("pwd");
                 String macBitalino = rs.getString("macBitalino");
-                // meter contraseña
-                System.out.println("name: "+ name);
                 patient = new Patient(patID, name, username2, address, phoneNumber, email, diagnosis, docID, password, macBitalino);
-                System.out.println(patient.getFullName());
             }
         } catch (SQLException e) {
             patient = null;
-            //e.printStackTrace();
         }
         return patient;
     }
 
+    @Override
+    public Patient getPatientById(int id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

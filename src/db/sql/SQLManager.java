@@ -5,6 +5,7 @@
  */
 package db.sql;
 
+import Utilities.ConnectionClient;
 import db.interfaces.*;
 import java.io.IOException;
 import java.sql.Connection;
@@ -52,7 +53,8 @@ public class SQLManager implements DBManager {
             Class.forName("com.mysql.jdbc.Driver");
             String ipFromConfigFile = "";
             try {
-                this.c = DriverManager.getConnection("jdbc:mysql://" + ipFromConfigFile + "/dbbradycardia?user=root&password="+ Utilities.ConnectionClient.getSQLPasswordFromFile());
+                String[] datos=ConnectionClient.getDataFromFile();
+                this.c = DriverManager.getConnection("jdbc:mysql://" + ipFromConfigFile + "/dbbradycardia?user=root&password="+ datos[4]);
             } catch (IOException ex) {
                 Logger.getLogger(SQLManager.class.getName()).log(Level.SEVERE, null, ex);
             }

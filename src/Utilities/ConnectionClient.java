@@ -11,11 +11,7 @@ import db.interfaces.DBManager;
 import db.interfaces.DoctorManager;
 import db.interfaces.PatientManager;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import serverbradycardia.*;
 
@@ -37,7 +33,7 @@ public class ConnectionClient {
         String path = file2.getAbsolutePath();
         String goodpath = file2.getAbsolutePath().substring(0, path.length() - 2).concat("/files/DataConnection.txt");
         FileReader br = null;
-        String[] datos = {"a", "a", "a", "a"};
+        String[] datos = new String[5];
         try {
             br = new FileReader(goodpath);
 
@@ -119,30 +115,19 @@ public class ConnectionClient {
         serverThreadsClient.sendPatient(p);
     }
     
-    
-    public static String getSQLPasswordFromFile() throws IOException {
-        File file2 = new File(".");
-        String path = file2.getAbsolutePath();
-        String goodpath = file2.getAbsolutePath().substring(0, path.length() - 2).concat("/files/PasswordMySQL.txt");
-        FileReader fr = null;
-        String password = "";
-        try {
-            fr = new FileReader(goodpath);
+    public static void copyInputStreamToFile(InputStream inputStream, File file, PrintWriter pw)
+            throws IOException {
 
-            BufferedReader br = new BufferedReader(fr);
-            password = br.readLine();
-            
-        } catch (FileNotFoundException ex) {
-            throw new IOException("File not found");
-        } catch (IOException e) {
-            throw new IOException("Error");
+        // append = false
+        try (FileOutputStream outputStream = new FileOutputStream(file, false)) {
+            int read;
+            byte[] bytes = new byte[10000];
+            while ((read = inputStream.read(bytes)) != -1) {
+                //estamos mandando todos los bytes del fichero en forma de char
+                pw.write((char) read);
+                
+            }
         }
-        //datos[0] ---> IP SERVER SOCKET
-        //datos[1] ---> ServerSocket
-        //datos[2] ---> IP DB SERVER
-        //datos[3] ---> PORT DB SERVER
-        
        
-        return password;
     }
 }

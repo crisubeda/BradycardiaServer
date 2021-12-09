@@ -130,5 +130,37 @@ public class SQLDoctorManager implements DoctorManager{
         }
         return listNames;
     }
+    
+    public Patient getPatientByFullname(String fullname) {
+        System.out.println("Se ha metido en buscar por nombre de usuario");
+        Patient patient = new Patient();
+        try {
+            String sqlpatient = "SELECT * FROM Patient WHERE fullname LIKE ?";
+            PreparedStatement stm = c.prepareStatement(sqlpatient);
+            stm.setString(1, fullname);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Integer patID = rs.getInt("id");
+                String name = rs.getString("fullname");
+                String username2 = rs.getString("username");
+                String address = rs.getString("address");
+                String phoneNumber = rs.getString("phoneNumber");
+                String email = rs.getString("email");
+                Integer docID = rs.getInt("idDoctor");
+                String diagnosis = rs.getString("diagnosis");
+                String password = rs.getString("pwd");
+                String macBitalino = rs.getString("macBitalino");
+                // meter contraseña
+                System.out.println("name: "+ name);
+                patient = new Patient(patID, name, username2, address, phoneNumber, email, diagnosis, docID, password, macBitalino);
+                System.out.println(patient.getFullName());
+            }
+        } catch (SQLException e) {
+            patient = null;
+            //e.printStackTrace();
+        }
+        return patient;
+    }
+    
     }
 

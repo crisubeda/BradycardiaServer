@@ -7,11 +7,15 @@ package db.interfaces;
 
 import Pojos.Patient;
 import java.io.File;
+import java.io.PrintWriter;
 
 /**
  *
  * @author drijc
  */
+
 public interface FilesManager {
         public void insertFile(File file, Patient pat);
+        public String[] getNameFilesById(int id);
+        public File getFileByName(String name, PrintWriter pw);
 }

@@ -6,6 +6,7 @@
 package db.interfaces;
 
 import Pojos.Doctor;
+import Pojos.Patient;
 
 /**
  *
@@ -17,4 +18,5 @@ public interface DoctorManager {
     public void modifyDoctor(Doctor doc);
     public Doctor getDoctorByUsername(String username);
     public String[] getNameByName(String name);
+    public Patient getPatientByFullname(String fullname);
 }
