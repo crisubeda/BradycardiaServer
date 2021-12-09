@@ -108,13 +108,15 @@ public class SQLDoctorManager implements DoctorManager{
         System.out.println("Hemos entrado y name es: " +name);
         String[] listNames=new String[100];
         int position=0;
-        String sqlpatient = "SELECT * FROM Patient WHERE fullname=?";
+        String sqlpatient = "SELECT * FROM Patient WHERE fullname LIKE ?";
         try {
             PreparedStatement stm = c.prepareStatement(sqlpatient);
             stm.setString(1, name+"%");
             ResultSet rs = stm.executeQuery();
-
+            System.out.println("Ha ejecutado query");
+        
             while (rs.next()) {
+                System.out.println("se mete en rs.next");
                 String fullname = rs.getString("fullname");
                 System.out.println("El fullname es: " +fullname);
                 listNames[position] = fullname;

@@ -26,6 +26,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.sql.Date;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -202,12 +203,20 @@ public class ServerThreadsClient implements Runnable {
                                         ListNames= doctorManager.getNameByName(line.substring(2, line.length())); 
                                         System.out.println("La lista de nombres es: " +ListNames[0]);
                                         System.out.println("Ya he entrado en la base de datos");
-                                        String messageNames ="";
-                                        for(int i=0;i<ListNames.length;i++){
-                                            messageNames.concat(ListNames[i]+ ";");
+                                        //System.out.println(Arrays.toString(ListNames));
+                                        //String messageNames ="";
+                                        
+                                        StringBuilder strBuilder = new StringBuilder();
+                                        for (int i = 0; i < ListNames.length; i++) {
+                                           strBuilder.append(ListNames[i] + ";");
                                         }
+                                        String messageNames = strBuilder.toString();
+                                        /*for(int i=0;i<ListNames.length;i++){
+                                            messageNames.concat(ListNames[i]+ ", ");
+                                        }*/
+                                        System.out.println("los nombres concatenados son: " + messageNames);
                                         PrintWriter printWriter2 = new PrintWriter(socket.getOutputStream(), true);
-                                        printWriter2.println(messageNames);
+                                        printWriter2.println(messageNames);//obtener nombres con receiveData
                                         System.out.println("He mandado el mensaje correctamente: " +messageNames);
                                     }else if(head1.equals("n#")){
                                         

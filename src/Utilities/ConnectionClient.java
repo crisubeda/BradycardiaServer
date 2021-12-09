@@ -10,6 +10,7 @@ import Pojos.Patient;
 import db.interfaces.DBManager;
 import db.interfaces.DoctorManager;
 import db.interfaces.PatientManager;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -118,4 +119,30 @@ public class ConnectionClient {
         serverThreadsClient.sendPatient(p);
     }
     
+    
+    public static String getSQLPasswordFromFile() throws IOException {
+        File file2 = new File(".");
+        String path = file2.getAbsolutePath();
+        String goodpath = file2.getAbsolutePath().substring(0, path.length() - 2).concat("/files/PasswordMySQL.txt");
+        FileReader fr = null;
+        String password = "";
+        try {
+            fr = new FileReader(goodpath);
+
+            BufferedReader br = new BufferedReader(fr);
+            password = br.readLine();
+            
+        } catch (FileNotFoundException ex) {
+            throw new IOException("File not found");
+        } catch (IOException e) {
+            throw new IOException("Error");
+        }
+        //datos[0] ---> IP SERVER SOCKET
+        //datos[1] ---> ServerSocket
+        //datos[2] ---> IP DB SERVER
+        //datos[3] ---> PORT DB SERVER
+        
+       
+        return password;
+    }
 }
