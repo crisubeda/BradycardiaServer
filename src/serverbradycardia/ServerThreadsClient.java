@@ -146,16 +146,25 @@ public class ServerThreadsClient implements Runnable {
                                 } else if (head1.equals("g#")) { //g de go
                                     patient = doctorManager.getPatientByFullname(line.substring(2, line.length()));
                                     sendPatient(patient);
-                                while(true){
-                                    line = bufferedReader.readLine();
-                                    if (line.equals("files")) {
-                                        FunctionsWithPatients.getFiles(bufferedReader);
-                                       
-                                    } else if (line.equals("ex")) {
-                                        exit = true;
-                                        break;
+                                    boolean filetaken=false;
+                                    while(!filetaken){
+                                        line = bufferedReader.readLine();
+                                        if (line.equals("files")) {
+                                            FunctionsWithPatients.getFiles(bufferedReader,socket);
+                                            filetaken=true;
+                                            
+                                        } else if(line.equals("ex")){
+                                            exit=true;
+                                            break;
+                                        } else if(line.equals("back")){
+                                             filetaken=false;
+                                        }
                                     }
-                                    }
+                                if(filetaken){
+                                    line="ex";
+                                    exit=true;
+                                    break;
+                                }
                                 } else if (head1.equals("re")) {
                                     exit = true;
                                     break;
