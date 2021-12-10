@@ -47,6 +47,14 @@ public class ServerThreadsClient implements Runnable {
         doctorManager = dbManager.getDoctorManager();
         patientManager = dbManager.getPatientManager();
         filesManager = dbManager.getFilesManager();
+        file= new File("files/.");
+        if(!file.exists()){
+            try {
+                file.createNewFile();
+            } catch (IOException ex) {
+                Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 
         try {
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -101,10 +109,12 @@ public class ServerThreadsClient implements Runnable {
                                             filesManager.insertFile(file, patient);
                                         }
                                     } else if (line.equals("diagnosis")) {
+                                        
                                         line = bufferedReader.readLine();
                                         if (line.equals("sendDiagnosis")) {
                                             line = bufferedReader.readLine();
                                             patient.setDiagnosis(line);
+                                            System.out.println("diagnoses: " +patient.getDiagnosis());
                                             patientManager.modifyDiagnosis(patient);
                                         }
 
@@ -163,6 +173,7 @@ public class ServerThreadsClient implements Runnable {
                                 } else if (head1.equals("g#")) { //g de go
                                     patient = doctorManager.getPatientByFullname(line.substring(2, line.length()));
                                     sendPatient(patient);
+                                    System.out.println("patient diagnoses: " +patient.getDiagnosis());
                                     line = bufferedReader.readLine();
                                     if (line.equals("files")) {
                                         String[] ListNamesFiles = filesManager.getNameFilesById(patient.getID());
@@ -179,8 +190,12 @@ public class ServerThreadsClient implements Runnable {
                                         dos2 = Character.toString(line.charAt(1));
                                         head1 = uno1.concat(dos2);
                                         if (head1.equals("s#")) { //s de search
-                                            File file = filesManager.getFileByName(line.substring(2, line.length()), printWriter3);
-
+                                            System.out.println("Nombre del fichero: " +line.substring(2, line.length()));
+                                            filesManager.getFileByName(line.substring(2, line.length()),file);
+                                            OutputStream outputstream= socket.getOutputStream();
+                                            ObjectOutputStream obj=new ObjectOutputStream(outputstream);
+                                            obj.writeObject(file);
+                                            System.out.println("Hemos mandado el fichero:" +file.getName());
                                         } else if (head1.equals("b#")) { //b de back
 
                                         }

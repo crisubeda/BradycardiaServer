@@ -74,9 +74,8 @@ public class SQLFilesManager implements FilesManager{
         return filesName;
     }
     
-     public File getFileByName(String name, PrintWriter pw) {
+     public void getFileByName(String name, File file) {
         String sqlpatient = "SELECT files FROM FILES WHERE fileName LIKE ?";
-        File file=new File(".");
         int contador=0;
         try {
             PreparedStatement stm = c.prepareStatement(sqlpatient);
@@ -85,7 +84,7 @@ public class SQLFilesManager implements FilesManager{
             while (rs.next()) {
                 InputStream input = rs.getBinaryStream("files");
                 try {
-                    ConnectionClient.copyInputStreamToFile(input,file,pw);
+                    ConnectionClient.copyInputStreamToFile(input,file);
                 } catch (IOException ex) {
                     Logger.getLogger(SQLFilesManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -96,6 +95,5 @@ public class SQLFilesManager implements FilesManager{
         } catch (SQLException ex) {
             Logger.getLogger(SQLPatientManager.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return file;
     }
 }

@@ -72,21 +72,15 @@ public class ConnectionClient {
     public static Patient getData(String line, Patient patient, PatientManager patientManager) {
         boolean stop = false;
         Patient p = new Patient();
-        
-        //Patient p = new Patient();
         if (line.charAt(0) == 'p') {
             String[] data = Reads.ReadDatos(line);
             System.out.println("username: " + data[0]);
             System.out.println("pass: " + data[1]);
-            //checkPassword();
             System.out.println("Estoy antes del get PatientByUsername");
             p= patientManager.getPatientByUsername(data[0]);
             if(!p.getPassword().equals(data[1])){
                 p.setEmail("null");
             }
-            // patient = new Patient(1, "Cristina", "CrisMola", "Calle baloncesto", "68970896979", "null", "nada super sana", 2, "98:D3:91:FD:69:49");
-            // System.out.println("Name: " + patient.getFullName());
-            //meter tambien el password cuanod lo tengamos
         } else if (line.charAt(0) == 'p') {
             //Reads.ReadA(introd);//bitalino....
         }
@@ -115,19 +109,15 @@ public class ConnectionClient {
         serverThreadsClient.sendPatient(p);
     }
     
-    public static void copyInputStreamToFile(InputStream inputStream, File file, PrintWriter pw)
+    public static void copyInputStreamToFile(InputStream inputStream, File file)
             throws IOException {
-
-        // append = false
         try (FileOutputStream outputStream = new FileOutputStream(file, false)) {
             int read;
             byte[] bytes = new byte[10000];
             while ((read = inputStream.read(bytes)) != -1) {
                 //estamos mandando todos los bytes del fichero en forma de char
-                pw.write((char) read);
-                
+                outputStream.write(bytes,0, read);
             }
         }
-       
     }
 }

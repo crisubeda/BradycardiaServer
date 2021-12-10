@@ -17,5 +17,5 @@ import java.io.PrintWriter;
 public interface FilesManager {
         public void insertFile(File file, Patient pat);
         public String[] getNameFilesById(int id);
-        public File getFileByName(String name, PrintWriter pw);
+        public void getFileByName(String name,File file);
 }
