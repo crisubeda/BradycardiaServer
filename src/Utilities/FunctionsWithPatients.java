@@ -20,18 +20,7 @@ import static serverbradycardia.ServerThreadsClient.*;
  * @author drijc
  */
 public class FunctionsWithPatients {
-    public static Patient again(BufferedReader bufferedReader){
-        Patient patient= new Patient();
-        String line="";
-        try {
-            line = bufferedReader.readLine();
-        } catch (IOException ex) {
-           // Logger.getLogger(FunctionsWithPatients.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         patient = ConnectionClient.getData(line, patient, patientManager);
-         System.out.println("Patient send:"+ patient);
-         return patient;
-    }
+   
     public static void seachPatients(String line){
         String[] ListNames = new String[100];
         ListNames = doctorManager.getNameByName(line.substring(2, line.length()));
@@ -54,7 +43,6 @@ public class FunctionsWithPatients {
         try {
             printWriter = new PrintWriter(socket.getOutputStream(), true);
        
-            System.out.println("line: "+line);
         if (line.equals("Introducebitalino")) {
             line = bufferedReader.readLine();
             if (!line.equals("back")) {
@@ -114,7 +102,6 @@ public class FunctionsWithPatients {
         } catch (IOException ex) {
          //   Logger.getLogger(FunctionsWithPatients.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("line: "+ line);
         //enseñamos el fichero que pide
         String uno1 = Character.toString(line.charAt(0));
         String dos2 = Character.toString(line.charAt(1));
