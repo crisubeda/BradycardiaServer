@@ -64,8 +64,6 @@ public class ConnectionClient {
         //datos[1] ---> ServerSocket
         //datos[2] ---> IP DB SERVER
         //datos[3] ---> PORT DB SERVER
-        System.out.println(datos[1]);
-        System.out.println(Utilities.Exceptions.checkFloat(datos[1]));
         return datos;
     }
 
@@ -79,7 +77,7 @@ public class ConnectionClient {
                 p= new Patient();
                 p.setEmail("null");
             }
-            if(!p.getPassword().equals(data[1])){
+           else if(!p.getPassword().equals(data[1])){
                 p= new Patient();
                 p.setEmail("null");
             }

@@ -87,38 +87,7 @@ public class ServerThreadsClient implements Runnable {
                                 a = false;
                                 while (true) {
                                     line = bufferedReader.readLine();
-                                    if (line.equals("Introducebitalino")) {
-                                        line = bufferedReader.readLine();
-                                        if (!line.equals("back")) {
-                                            patient.setMacBitalino(line);
-                                            patientManager.modifyMac(patient);
-                                            sendPatient(patient);
-                                        }
-                                    } else if (line.equals("GetData")) {
-                                        line = bufferedReader.readLine();
-                                        if (!line.equals("back")) {
-                                            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("_uuuu-MM-dd_HH-mm-ss");
-                                            LocalDateTime date = LocalDateTime.now();
-                                            String name = patient.getUsername().concat(dtf.format(date));
-                                            file = new File("files/fileBit_" + name + ".txt");
-                                            FileWriter myWriter = new FileWriter(file);
-                                            while ((line = bufferedReader.readLine()) != null && !line.equals("back")) {
-                                                myWriter.write(line);
-                                            }
-                                            myWriter.close();
-                                            filesManager.insertFile(file, patient);
-                                        }
-                                    } else if (line.equals("diagnosis")) {
-                                        line = bufferedReader.readLine();
-                                        if (line.equals("sendDiagnosis")) {
-                                            line = bufferedReader.readLine();
-                                            patient.setDiagnosis(line);
-                                            patientManager.modifyDiagnosis(patient);
-                                        }
-                                    } else if (line.equals("release")) {
-                                        exit = true;
-                                        break;
-                                    }
+                                    FunctionsWithPatients.insidePatient(line, bufferedReader);
                                 }
                             } else if (line.equals("back") || line.equals("release")) {
                                 a = false;
@@ -165,54 +134,23 @@ public class ServerThreadsClient implements Runnable {
                                     
                                 } else if (line.equals("done")) {
                                     a = false;
-                                }
-                                 
+                                } 
                              }
-                    
                             while (true) {
                                 line = bufferedReader.readLine();
                                 String uno1 = Character.toString(line.charAt(0));
                                 String dos2 = Character.toString(line.charAt(1));
                                 String head1 = uno1.concat(dos2);
                                 if (head1.equals("s#")) { //s de search
-                                    String[] ListNames = new String[100];
-                                    ListNames = doctorManager.getNameByName(line.substring(2, line.length()));
-                                    StringBuilder strBuilder = new StringBuilder();
-                                    for (int i = 0; i < ListNames.length; i++) {
-                                        strBuilder.append(ListNames[i] + ";");
-                                    }
-
-                                    String messageNames = strBuilder.toString();
-                                    PrintWriter printWriter4 = new PrintWriter(socket.getOutputStream(), true);
-                                    printWriter4.println(messageNames);//obtener nombres con receiveData
+                                    FunctionsWithPatients.seachPatients(line);
                                 } else if (head1.equals("g#")) { //g de go
                                     patient = doctorManager.getPatientByFullname(line.substring(2, line.length()));
                                     sendPatient(patient);
                                 while(true){
                                     line = bufferedReader.readLine();
                                     if (line.equals("files")) {
-                                        String[] ListNamesFiles = filesManager.getNameFilesById(patient.getID());
-                                        StringBuilder strBuilderFiles = new StringBuilder();
-                                        for (int i = 0; i < ListNamesFiles.length; i++) {
-                                            strBuilderFiles.append(ListNamesFiles[i] + ";");
-                                        }
-                                        String filesNames = strBuilderFiles.toString();
-                                        PrintWriter printWriter3 = new PrintWriter(socket.getOutputStream(), true);
-                                        printWriter3.println(filesNames);//mandamos todos los ficheros de ese paciente al doctor
-                                        line = bufferedReader.readLine(); //llega el file que ha seleccionado el doctor
-                                        //enseñamos el fichero que pide
-                                        uno1 = Character.toString(line.charAt(0));
-                                        dos2 = Character.toString(line.charAt(1));
-                                        head1 = uno1.concat(dos2);
-                                        if (head1.equals("s#")) { //s de search
-                                            String path;
-                                            path = filesManager.getFileByName(line.substring(2, line.length()));
-                                            File fileDoctor =new File(path);
-                                            OutputStream outputstream= socket.getOutputStream();
-                                            ObjectOutputStream obj=new ObjectOutputStream(outputstream);
-                                            obj.writeObject(fileDoctor);
-                                        } 
-
+                                        FunctionsWithPatients.getFiles(bufferedReader);
+                                       
                                     } else if (line.equals("ex")) {
                                         exit = true;
                                         break;
