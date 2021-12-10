@@ -8,10 +8,7 @@ package db.sql;
 import Pojos.Doctor;
 import Pojos.Patient;
 import db.interfaces.DoctorManager;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,58 +22,9 @@ public class SQLDoctorManager implements DoctorManager{
     public SQLDoctorManager(Connection c){
         this.c =c;
     }
-    public void createDoctor(Doctor doc) 
-	{
-        String sqldoctor= "INSERT INTO Doctor (idDoctor, fullname, username, email, pwd)"
-					+  "VALUES (?,?,?)";
-        try {
-            PreparedStatement stm = c.prepareStatement(sqldoctor);
-            stm.setString(2,doc.getFullName());
-            stm.setString(3,doc.getUsername()); 
-            stm.setString(4,doc.getEmail());
-            stm.setString(5, doc.getPassword());
-            
-            stm.executeUpdate();
-            stm.close();
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(SQLPatientManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        }
-    
-    public void deleteDoctor(Integer id){
-		
-        String sqldoctor = "DELETE FROM Doctor WHERE idDoctor=?";
-         try {
-            PreparedStatement stm = c.prepareStatement(sqldoctor);
-            stm.setInt(1,id);
-            stm.executeUpdate();
-            stm.close();
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(SQLPatientManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public void modifyDoctor(Doctor doc){
-        
-	String sqldoctor = "UPDATE Doctor SET fullname=?, username=?, email=? WHERE idDoctor=?";
-         try {
-            PreparedStatement stm = c.prepareStatement(sqldoctor);
-            stm.setString(1, doc.getFullName());
-            stm.setString(2, doc.getUsername());
-            stm.setString(3, doc.getEmail());
-            stm.setInt(7, doc.getID());
-  
-            stm.executeUpdate();
-            stm.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(SQLPatientManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
    
+    
     public Doctor getDoctorByUsername(String username) {
-        System.out.println("Se ha metido en getDoctorBy Username");
         Doctor doctor = new Doctor();
         try {
             String sqldoctor = "SELECT * FROM Doctor WHERE username LIKE ?";
@@ -86,11 +34,10 @@ public class SQLDoctorManager implements DoctorManager{
             while (rs.next()) {
                 Integer docID = rs.getInt("idDoctor");
                 String name = rs.getString("fullname");
-                String username2 = rs.getString("username");
                 String email = rs.getString("email");
-                // meter contraseña
+                String pass= rs.getString("pwd");
                 System.out.println("name: "+ name);
-                doctor = new Doctor(docID, name, username2,email);
+                doctor = new Doctor(docID, name, username,email,pass);
                 System.out.println(doctor.getFullName());
             }
         } catch (SQLException e) {
@@ -105,7 +52,6 @@ public class SQLDoctorManager implements DoctorManager{
     
     @Override
     public String[] getNameByName(String name) {
-        System.out.println("Hemos entrado y name es: " +name);
         String[] listNames=new String[100];
         int position=0;
         String sqlpatient = "SELECT * FROM Patient WHERE fullname LIKE ?";
@@ -113,12 +59,9 @@ public class SQLDoctorManager implements DoctorManager{
             PreparedStatement stm = c.prepareStatement(sqlpatient);
             stm.setString(1, name+"%");
             ResultSet rs = stm.executeQuery();
-            System.out.println("Ha ejecutado query");
         
             while (rs.next()) {
-                System.out.println("se mete en rs.next");
                 String fullname = rs.getString("fullname");
-                System.out.println("El fullname es: " +fullname);
                 listNames[position] = fullname;
                 position++;
             }
@@ -132,7 +75,6 @@ public class SQLDoctorManager implements DoctorManager{
     }
     
     public Patient getPatientByFullname(String fullname) {
-        System.out.println("Se ha metido en buscar por nombre de usuario");
         Patient patient = new Patient();
         try {
             String sqlpatient = "SELECT * FROM Patient WHERE fullname LIKE ?";
@@ -146,14 +88,10 @@ public class SQLDoctorManager implements DoctorManager{
                 String address = rs.getString("address");
                 String phoneNumber = rs.getString("phoneNumber");
                 String email = rs.getString("email");
-                Integer docID = rs.getInt("idDoctor");
                 String diagnosis = rs.getString("diagnosis");
                 String password = rs.getString("pwd");
                 String macBitalino = rs.getString("macBitalino");
-                // meter contraseña
-                System.out.println("name: "+ name);
-                patient = new Patient(patID, name, username2, address, phoneNumber, email, diagnosis, docID, password, macBitalino);
-                System.out.println(patient.getFullName());
+                patient = new Patient(patID, name, username2, address, phoneNumber, email, diagnosis, password, macBitalino);
             }
         } catch (SQLException e) {
             patient = null;

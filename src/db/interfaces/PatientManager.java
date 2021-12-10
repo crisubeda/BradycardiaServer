@@ -15,10 +15,6 @@ public interface PatientManager {
 
     public void createPatient(Patient pat);
 
-    public void deletePatient(Integer id);
-
-    public void modifyPatient(Patient pat);
-
     public Patient getPatientById(int id);
 
     public Patient getPatientByUsername(String Username);

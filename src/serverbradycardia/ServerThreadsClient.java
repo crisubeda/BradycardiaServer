@@ -70,9 +70,12 @@ public class ServerThreadsClient implements Runnable {
                     String uno = Character.toString(line.charAt(0));
                     String dos = Character.toString(line.charAt(1));
                     String head = uno.concat(dos);
+                    System.out.println("head:" + head);
                     if (head.equals("p#")) {
+                        System.out.println("line: "+ line);
                         //Cogemos la información del paciente de la base de datos
                         patient = ConnectionClient.getData(line, patient, patientManager);
+                        System.out.println("pat:"+ patient);
                         sendPatient(patient);
                         while (a) {
                             line = bufferedReader.readLine();
@@ -98,25 +101,20 @@ public class ServerThreadsClient implements Runnable {
                                             LocalDateTime date = LocalDateTime.now();
                                             String name = patient.getUsername().concat(dtf.format(date));
                                             file = new File("files/fileBit_" + name + ".txt");
-                                            patient.addFile(file);
                                             FileWriter myWriter = new FileWriter(file);
                                             while ((line = bufferedReader.readLine()) != null && !line.equals("back")) {
                                                 myWriter.write(line);
                                             }
                                             myWriter.close();
-                                            //meter en base de datos
                                             filesManager.insertFile(file, patient);
                                         }
                                     } else if (line.equals("diagnosis")) {
-                                        
                                         line = bufferedReader.readLine();
                                         if (line.equals("sendDiagnosis")) {
                                             line = bufferedReader.readLine();
                                             patient.setDiagnosis(line);
-                                            System.out.println("diagnoses: " +patient.getDiagnosis());
                                             patientManager.modifyDiagnosis(patient);
                                         }
-
                                     } else if (line.equals("release")) {
                                         exit = true;
                                         break;
@@ -145,14 +143,32 @@ public class ServerThreadsClient implements Runnable {
                     String uno = Character.toString(line.charAt(0));
                     String dos = Character.toString(line.charAt(1));
                     String head = uno.concat(dos);
+                    boolean a= true;
                     if (head.equals("d#")) {
                         doctor = ConnectionClient.getDataDoctor(line, doctor, doctorManager);
-                        if (doctor == null) {
-                            PrintWriter printWriter2 = new PrintWriter(socket.getOutputStream(), true);
-                            printWriter2.println(doctor.toString());
-                        } else {
-                            PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
-                            printWriter.println(doctor.toString());
+                        PrintWriter printWriter2 = new PrintWriter(socket.getOutputStream(), true);
+                        printWriter2.println(doctor.toString());
+                        while (a) {
+                            try {
+                                line = bufferedReader.readLine();
+                            } catch (IOException ex) {
+                                Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                                if (line.equals("again")) {
+                                try {
+                                    line = bufferedReader.readLine();
+                                } catch (IOException ex) {
+                                    Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                    doctor = ConnectionClient.getDataDoctor(line, doctor, doctorManager);
+                                    printWriter2.println(doctor.toString());
+                                    
+                                } else if (line.equals("done")) {
+                                    a = false;
+                                }
+                                 
+                             }
+                    
                             while (true) {
                                 line = bufferedReader.readLine();
                                 String uno1 = Character.toString(line.charAt(0));
@@ -167,12 +183,12 @@ public class ServerThreadsClient implements Runnable {
                                     }
 
                                     String messageNames = strBuilder.toString();
-                                    PrintWriter printWriter2 = new PrintWriter(socket.getOutputStream(), true);
-                                    printWriter2.println(messageNames);//obtener nombres con receiveData
+                                    PrintWriter printWriter4 = new PrintWriter(socket.getOutputStream(), true);
+                                    printWriter4.println(messageNames);//obtener nombres con receiveData
                                 } else if (head1.equals("g#")) { //g de go
                                     patient = doctorManager.getPatientByFullname(line.substring(2, line.length()));
                                     sendPatient(patient);
-                                    System.out.println("patient diagnoses: " +patient.getDiagnosis());
+                                while(true){
                                     line = bufferedReader.readLine();
                                     if (line.equals("files")) {
                                         String[] ListNamesFiles = filesManager.getNameFilesById(patient.getID());
@@ -189,26 +205,29 @@ public class ServerThreadsClient implements Runnable {
                                         dos2 = Character.toString(line.charAt(1));
                                         head1 = uno1.concat(dos2);
                                         if (head1.equals("s#")) { //s de search
-                                            System.out.println("Nombre del fichero: " +line.substring(2, line.length()));
                                             String path;
                                             path = filesManager.getFileByName(line.substring(2, line.length()));
                                             File fileDoctor =new File(path);
                                             OutputStream outputstream= socket.getOutputStream();
                                             ObjectOutputStream obj=new ObjectOutputStream(outputstream);
                                             obj.writeObject(fileDoctor);
-                                            System.out.println("Hemos mandado el fichero:" +file.getName());
                                         } 
 
                                     } else if (line.equals("ex")) {
                                         exit = true;
                                         break;
                                     }
+                                    }
                                 } else if (head1.equals("re")) {
                                     exit = true;
                                     break;
-                                }
+                                } else if (line.equals("ex")) {
+                                        exit = true;
+                                        break;
+                                    }
+                                
                             }
-                        }
+                        
                     } else if (head.equals("ex")) {
                         exit = true;
                     }

@@ -27,7 +27,6 @@ public class PatientUtilities {
                         data = data.concat(Character.toString(line.charAt(i + 2)));
                         i++;
                     }
-                    //System.out.println("Con es:" + con);
                     datos[contador] = data;
                     i++;
                     contador++;
@@ -36,8 +35,6 @@ public class PatientUtilities {
                 
                 Patient patient2 = patientManager.getPatientByUsername(datos[2]);
                 if(!patient2.getUsername().equals(datos[2])){
-                    System.out.println("no existe nadiecon ese username");
-                //si esta devolver un no vale o algo asi
                 patient.setID(Exceptions.convertInt(datos[0]));
                 patient.setFullName(datos[1]);
                 patient.setUsername(datos[2]);
@@ -45,14 +42,12 @@ public class PatientUtilities {
                 patient.setPhonenumber(datos[4]);
                 patient.setEmail(datos[5]);
                 patient.setDiagnosis(datos[6]);
-                patient.setDocId(Exceptions.convertInt(datos[7]));
-                patient.setPassword(datos[8]);
-                patient.setMacBitalino(datos[9]);
+                patient.setPassword(datos[7]);
+                patient.setMacBitalino(datos[8]);
                 patient.setNewBitalino();
-                patientManager.createPatient(patient); //meter en base de datos
+                patientManager.createPatient(patient); 
                 } else {
                     nuevo = false;
-                    System.out.println("existe alguien con este username");
                 }
                 break;
                 

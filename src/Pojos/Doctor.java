@@ -20,7 +20,7 @@ public class Doctor {
     public Doctor() {
         this.fullName = "";
         this.username = "";
-        //this.password = "";
+        this.password = "";
     }
 
     public Doctor(String username, String fullname, String password) {
@@ -44,11 +44,12 @@ public class Doctor {
         this.username = username;
     }
 
-    public Doctor(Integer ID, String name, String username2, String email) {
+    public Doctor(Integer ID, String name, String username2, String email, String pwd) {
         this.ID = ID;
         this.username = username2;
         this.email = email;
         this.fullName = name;
+        this.password=pwd;
     }
     public String getEmail() {
         return email;

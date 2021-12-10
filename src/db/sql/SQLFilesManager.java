@@ -8,16 +8,8 @@ package db.sql;
 import Pojos.Patient;
 import Utilities.ConnectionClient;
 import db.interfaces.FilesManager;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.*;
+import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -70,7 +62,7 @@ public class SQLFilesManager implements FilesManager{
     }
     
      public String getFileByName(String name) {
-         System.out.println("Entramos en funcion el nombre es:"+ name);
+        System.out.println("Entramos en funcion el nombre es:"+ name);
         String sqlpatient = "SELECT files FROM FILES WHERE fileName LIKE ?";
         String path = "";
         int contador=0;
@@ -80,7 +72,6 @@ public class SQLFilesManager implements FilesManager{
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 path = rs.getString("files");
-                System.out.println("path:" +path);
             }
             rs.close();
             stm.close();

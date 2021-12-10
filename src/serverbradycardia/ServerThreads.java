@@ -27,12 +27,10 @@ public class ServerThreads {
     public static void main(String[] args) throws IOException {
         Window.main(args);
        //Create a service that is waiting in port 9000
-        //Utilities.ConnectionClient.initialiceAll();
         String[] datos = Utilities.ConnectionClient.getDataFromFile();
         int ip = Utilities.Exceptions.convertInt(datos[1]);
         serverSocket = new ServerSocket(ip);
         listThreads= new Thread[100];
-        System.out.println("estamos probamdo la lista de threads: " +listThreads.length);
         int i=0;
         try {
             while (true) {

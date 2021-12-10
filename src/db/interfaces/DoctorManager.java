@@ -13,9 +13,6 @@ import Pojos.Patient;
  * @author Cristina
  */
 public interface DoctorManager {
-    public void createDoctor(Doctor doc);
-    public void deleteDoctor(Integer id);
-    public void modifyDoctor(Doctor doc);
     public Doctor getDoctorByUsername(String username);
     public String[] getNameByName(String name);
     public Patient getPatientByFullname(String fullname);

@@ -7,10 +7,7 @@ package db.sql;
 
 import Pojos.Patient;
 import db.interfaces.PatientManager;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,8 +24,8 @@ public class SQLPatientManager implements PatientManager {
     }
 
     public void createPatient(Patient pat) {
-        String sqlpatient = "INSERT INTO Patient (fullname, username, address, phoneNumber, email, diagnosis, idDoctor, pwd, macBitalino)"
-                + "VALUES (?,?,?,?,?,?,?,?,?)";
+        String sqlpatient = "INSERT INTO Patient (fullname, username, address, phoneNumber, email, diagnosis, pwd, macBitalino)"
+                + "VALUES (?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement stm = c.prepareStatement(sqlpatient);
             stm.setString(1, pat.getFullName());
@@ -37,9 +34,8 @@ public class SQLPatientManager implements PatientManager {
             stm.setString(4, pat.getPhonenumber());
             stm.setString(5, pat.getEmail());
             stm.setString(6, pat.getDiagnosis());
-            stm.setInt(7, pat.getDocId());
-            stm.setString(8, pat.getPassword());
-            stm.setString(9, pat.getMacBitalino());
+            stm.setString(7, pat.getPassword());
+            stm.setString(8, pat.getMacBitalino());
 
             stm.executeUpdate();
             stm.close();
@@ -49,18 +45,7 @@ public class SQLPatientManager implements PatientManager {
         }
     }
 
-    public void deletePatient(Integer id) {
-        String sqlpatient = "DELETE FROM Patient WHERE idPatient=?";
-        try {
-            PreparedStatement stm = c.prepareStatement(sqlpatient);
-            stm.setInt(1, id);
-            stm.executeUpdate();
-            stm.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(SQLPatientManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
+   
     public void modifyMac(Patient pat) {
         String sqlpatient = "UPDATE Patient SET macBitalino=? WHERE username=?";
         try {
@@ -87,25 +72,6 @@ public class SQLPatientManager implements PatientManager {
         }
     }
 
-    public void modifyPatient(Patient pat) {
-        String sqlpatient = "UPDATE Patient SET fullname=?, username=?, address=?, phoneNumber=?, email=?, idDoctor=?, macBitalino=? WHERE id=?";
-        try {
-            PreparedStatement stm = c.prepareStatement(sqlpatient);
-            stm.setString(1, pat.getFullName());
-            stm.setString(2, pat.getUsername());
-            stm.setString(3, pat.getAddress());
-            stm.setString(4, pat.getPhonenumber());
-            stm.setString(5, pat.getEmail());
-            stm.setInt(6, pat.getDocId());
-            stm.setString(7, pat.getMacBitalino());
-            stm.setInt(8, pat.getID());
-            stm.executeUpdate();
-            stm.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(SQLPatientManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     public Patient getPatientByUsername(String username) {
         Patient patient = new Patient();
         try {
@@ -120,11 +86,10 @@ public class SQLPatientManager implements PatientManager {
                 String address = rs.getString("address");
                 String phoneNumber = rs.getString("phoneNumber");
                 String email = rs.getString("email");
-                Integer docID = rs.getInt("idDoctor");
                 String diagnosis = rs.getString("diagnosis");
                 String password = rs.getString("pwd");
                 String macBitalino = rs.getString("macBitalino");
-                patient = new Patient(patID, name, username2, address, phoneNumber, email, diagnosis, docID, password, macBitalino);
+                patient = new Patient(patID, name, username2, address, phoneNumber, email, diagnosis, password, macBitalino);
             }
         } catch (SQLException e) {
             patient = null;
@@ -134,6 +99,6 @@ public class SQLPatientManager implements PatientManager {
 
     @Override
     public Patient getPatientById(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
 }

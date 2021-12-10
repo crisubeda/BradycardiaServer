@@ -74,11 +74,12 @@ public class ConnectionClient {
         Patient p = new Patient();
         if (line.charAt(0) == 'p') {
             String[] data = Reads.ReadDatos(line);
-            System.out.println("username: " + data[0]);
-            System.out.println("pass: " + data[1]);
-            System.out.println("Estoy antes del get PatientByUsername");
             p= patientManager.getPatientByUsername(data[0]);
             if(p==null){
+                p= new Patient();
+                p.setEmail("null");
+            }
+            if(!p.getPassword().equals(data[1])){
                 p= new Patient();
                 p.setEmail("null");
             }
@@ -92,13 +93,14 @@ public class ConnectionClient {
         Doctor doc = new Doctor();
         if (line.charAt(0) == 'd') {
             String[] data = Reads.ReadDatos(line);
-            System.out.println("username: " + data[0]);
-            System.out.println("pass: " + data[1]);
-            //checkPassword();
-            System.out.println("Estoy antes del get getDataDoctor");
             doc = doctorManager.getDoctorByUsername(data[0]);
-        } else if (line.charAt(0) == 'p') {
-            //Reads.ReadA(introd);//bitalino....
+            if(doc==null ){
+                doc=new Doctor();
+                doc.setEmail("null");
+            } else if(!doc.getPassword().equals(data[1])){
+                doc= new Doctor();
+                doc.setEmail("null");
+            }
         }
         return doc;
     }

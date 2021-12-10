@@ -8,9 +8,7 @@ package db.sql;
 import Utilities.ConnectionClient;
 import db.interfaces.*;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -61,12 +59,6 @@ public class SQLManager implements DBManager {
             patient = new SQLPatientManager(c);
             doctor = new SQLDoctorManager(c);
             file = new SQLFilesManager(c);
-            //esto es para prueba:
-            /*Statement stm = c.createStatement();
-           ResultSet rs = stm.executeQuery("select * from patient");
-
-           while(rs.next()){
-           System.out.println(rs.getString("nombre"));}*/
         } catch (ClassNotFoundException exc) {
             exc.printStackTrace();
 
