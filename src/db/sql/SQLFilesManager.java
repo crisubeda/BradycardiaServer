@@ -34,16 +34,11 @@ public class SQLFilesManager implements FilesManager{
     }
 
     public void insertFile(File file, Patient pat){
-        FileInputStream input = null;
-        try {
-            input = new FileInputStream(file);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(SQLPatientManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
         String sqlpatient = "INSERT INTO FILES(files,pati_id,fileName) VALUES(?,?,?)";
         try {
+            String path=file.getAbsolutePath();
             PreparedStatement stm = c.prepareStatement(sqlpatient);
-            stm.setBinaryStream(1, input);
+            stm.setString(1, path);
             stm.setInt(2, pat.getID());
             stm.setString(3, file.getName());
             stm.executeUpdate();
@@ -74,26 +69,24 @@ public class SQLFilesManager implements FilesManager{
         return filesName;
     }
     
-     public void getFileByName(String name, File file) {
+     public String getFileByName(String name) {
+         System.out.println("Entramos en funcion el nombre es:"+ name);
         String sqlpatient = "SELECT files FROM FILES WHERE fileName LIKE ?";
+        String path = "";
         int contador=0;
         try {
             PreparedStatement stm = c.prepareStatement(sqlpatient);
             stm.setString(1, name);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                InputStream input = rs.getBinaryStream("files");
-                try {
-                    ConnectionClient.copyInputStreamToFile(input,file);
-                } catch (IOException ex) {
-                    Logger.getLogger(SQLFilesManager.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                contador++;
+                path = rs.getString("files");
+                System.out.println("path:" +path);
             }
             rs.close();
             stm.close();
         } catch (SQLException ex) {
             Logger.getLogger(SQLPatientManager.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return path;
     }
 }

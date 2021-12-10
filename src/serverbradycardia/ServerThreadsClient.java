@@ -66,7 +66,6 @@ public class ServerThreadsClient implements Runnable {
                 String line = bufferedReader.readLine();
                 if (line.equals("patient-login")) {
                     boolean a = true;
-                    System.out.println("Vamos a login");
                     line = bufferedReader.readLine();
                     String uno = Character.toString(line.charAt(0));
                     String dos = Character.toString(line.charAt(1));
@@ -191,14 +190,14 @@ public class ServerThreadsClient implements Runnable {
                                         head1 = uno1.concat(dos2);
                                         if (head1.equals("s#")) { //s de search
                                             System.out.println("Nombre del fichero: " +line.substring(2, line.length()));
-                                            filesManager.getFileByName(line.substring(2, line.length()),file);
+                                            String path;
+                                            path = filesManager.getFileByName(line.substring(2, line.length()));
+                                            File fileDoctor =new File(path);
                                             OutputStream outputstream= socket.getOutputStream();
                                             ObjectOutputStream obj=new ObjectOutputStream(outputstream);
-                                            obj.writeObject(file);
+                                            obj.writeObject(fileDoctor);
                                             System.out.println("Hemos mandado el fichero:" +file.getName());
-                                        } else if (head1.equals("b#")) { //b de back
-
-                                        }
+                                        } 
 
                                     } else if (line.equals("ex")) {
                                         exit = true;

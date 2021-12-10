@@ -78,12 +78,11 @@ public class ConnectionClient {
             System.out.println("pass: " + data[1]);
             System.out.println("Estoy antes del get PatientByUsername");
             p= patientManager.getPatientByUsername(data[0]);
-            if(!p.getPassword().equals(data[1])){
+            if(p==null){
+                p= new Patient();
                 p.setEmail("null");
             }
-        } else if (line.charAt(0) == 'p') {
-            //Reads.ReadA(introd);//bitalino....
-        }
+        } 
 
         return p;
     }
